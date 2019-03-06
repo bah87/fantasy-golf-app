@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -12,21 +13,31 @@ export class AppNavbar extends React.Component {
     return (
       <Navbar bg='light' expand='lg'>
         <FontAwesomeIcon style={{ marginRight: '8px' }} icon='golf-ball' />
-        <Navbar.Brand href='#home'>Fantasy Golf</Navbar.Brand>
+        <Link to='/home'>
+          <Navbar.Brand>Fantasy Golf</Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='mr-auto'>
-            <Nav.Link href='#home'>Leaderboard</Nav.Link>
-            <Nav.Link href='#link'>Schedule</Nav.Link>
+            <Link to='/leaderboard'>
+              <Nav.Link>Leaderboard</Nav.Link>
+            </Link>
+            <Link to='/schedule'>
+              <Nav.Link>Schedule</Nav.Link>
+            </Link>
             <NavDropdown title='Fantasy' id='basic-nav-dropdown'>
-              <NavDropdown.Item href='#action/3.1'>Standings</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.2'>My team</NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.3'>
-                Join challenge
-              </NavDropdown.Item>
-              <NavDropdown.Item href='#action/3.4'>
-                Create challenge
-              </NavDropdown.Item>
+              <Link to='/standings'>
+                <NavDropdown.Item>Standings</NavDropdown.Item>
+              </Link>
+              <Link to='/team'>
+                <NavDropdown.Item>My team</NavDropdown.Item>
+              </Link>
+              <Link to='/join-challenge'>
+                <NavDropdown.Item>Join challenge</NavDropdown.Item>
+              </Link>
+              <Link to='/create-challenge'>
+                <NavDropdown.Item>Create challenge</NavDropdown.Item>
+              </Link>
             </NavDropdown>
           </Nav>
           <Form inline>
