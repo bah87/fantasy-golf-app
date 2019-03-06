@@ -5,11 +5,13 @@ import { Player } from './components/player';
 import { ProtectedRoute } from './util/route-util';
 import { PLAYERS } from './util/player-data';
 import './App.css';
+import { AppNavbar } from './components/app-navbar';
 
 export class App extends Component {
   render() {
     return (
       <div className='App'>
+        <AppNavbar />
         <header className='App-header'>
           <Switch>
             <ProtectedRoute
