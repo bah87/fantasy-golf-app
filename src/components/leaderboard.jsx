@@ -2,6 +2,7 @@ import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import { TournamentHeader } from './tournament-header/tournament-header';
 
 export class Leaderboard extends React.Component {
   constructor() {
@@ -25,7 +26,8 @@ export class Leaderboard extends React.Component {
         { headerName: 'R4', field: 'roundFourScore' },
         { headerName: 'TOT', field: 'totalStrokes' }
       ],
-      playerData: []
+      playerData: [],
+      tournamentData: undefined
     };
   }
 
@@ -44,7 +46,7 @@ export class Leaderboard extends React.Component {
           justifyContent: 'flex-start'
         }}
       >
-        <button onClick={this.fetchData}>Fetch Data</button>
+        {this.renderTournamentData()}
         <div
           className='ag-theme-balham'
           style={{
@@ -62,6 +64,14 @@ export class Leaderboard extends React.Component {
       </div>
     );
   }
+
+  renderTournamentData = () => {
+    return (
+      this.state.tournamentData && (
+        <TournamentHeader {...this.state.tournamentData} />
+      )
+    );
+  };
 
   fetchData = () => {
     fetch('https://statdata.pgatour.com/r/current/message.json').then(
@@ -115,6 +125,22 @@ export class Leaderboard extends React.Component {
       return;
     }
 
+    const { course_id, course_name, par_total } = data.leaderboard.courses[0];
+
+    const tournamentData = {
+      tournamentId: data.leaderboard.tournament_id,
+      tournamentName: data.leaderboard.tournament_name,
+      tourName: data.leaderboard.tour_name,
+      startDate: data.leaderboard.start_date,
+      endDate: data.leaderboard.end_date,
+      courseId: course_id,
+      courseName: course_name,
+      parTotal: par_total,
+      lastUpdated: data.last_updated,
+      round: data.leaderboard.current_round,
+      roundState: data.leaderboard.round_state
+    };
+
     const playerData = data.leaderboard.players.map(player => {
       const { first_name, last_name, country } = player.player_bio;
 
@@ -133,7 +159,13 @@ export class Leaderboard extends React.Component {
         status: player.status
       };
     });
-    this.setState({ isLoading: false, error: undefined, playerData });
+
+    this.setState({
+      isLoading: false,
+      error: undefined,
+      playerData,
+      tournamentData
+    });
   };
 
   handleFetchError = err => {
