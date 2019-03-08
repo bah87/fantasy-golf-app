@@ -21,43 +21,29 @@ export class App extends Component {
         <header className='App-header'>
           <Switch>
             <ProtectedRoute
-              exact
               path='/leaderboard'
               loggedIn
               component={Leaderboard}
             />
-            <ProtectedRoute exact path='/home' loggedIn component={Home} />
+            <ProtectedRoute exact path='/' loggedIn component={Home} />
+            <ProtectedRoute path='/schedule' loggedIn component={Schedule} />
             <ProtectedRoute
-              exact
-              path='/schedule'
-              loggedIn
-              component={Schedule}
-            />
-            <ProtectedRoute
-              exact
               path='/join-challenge'
               loggedIn
               component={JoinChallenge}
             />
             <ProtectedRoute
-              exact
               path='/create-challenge'
               loggedIn
               component={CreateChallenge}
             />
-            <ProtectedRoute
-              exact
-              path='/standings'
-              loggedIn
-              component={Standings}
-            />
-            <ProtectedRoute exact path='/team' loggedIn component={Team} />
+            <ProtectedRoute path='/standings' loggedIn component={Standings} />
+            <ProtectedRoute path='/team' loggedIn component={Team} />
             {PLAYERS.map(playerData => {
               const { id, firstName, lastName } = playerData;
               return (
                 <ProtectedRoute
                   key={id}
-                  exact
                   path={`/player/${id}/${firstName}-${lastName}`}
                   loggedIn
                   playerData={playerData}

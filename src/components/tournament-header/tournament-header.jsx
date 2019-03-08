@@ -42,6 +42,6 @@ TournamentHeader.propTypes = {
   courseName: PropTypes.string.isRequired,
   parTotal: PropTypes.string.isRequired,
   lastUpdated: PropTypes.string.isRequired,
-  round: PropTypes.string.isRequired,
+  round: PropTypes.number.isRequired,
   roundState: PropTypes.string.isRequired
 };

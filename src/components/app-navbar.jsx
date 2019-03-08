@@ -13,31 +13,31 @@ export class AppNavbar extends React.Component {
     return (
       <Navbar bg='light' expand='lg'>
         <FontAwesomeIcon style={{ marginRight: '8px' }} icon='golf-ball' />
-        <Link to='/home'>
+        <Link to='/'>
           <Navbar.Brand>Fantasy Golf</Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='mr-auto'>
-            <Link to='/leaderboard'>
-              <Nav.Link>Leaderboard</Nav.Link>
-            </Link>
-            <Link to='/schedule'>
-              <Nav.Link>Schedule</Nav.Link>
-            </Link>
+            <Nav.Link>
+              <Link to='/leaderboard'>Leaderboard</Link>
+            </Nav.Link>
+            <Nav.Link>
+              <Link to='/schedule'>Schedule</Link>
+            </Nav.Link>
             <NavDropdown title='Fantasy' id='basic-nav-dropdown'>
-              <Link to='/standings'>
-                <NavDropdown.Item>Standings</NavDropdown.Item>
-              </Link>
-              <Link to='/team'>
-                <NavDropdown.Item>My team</NavDropdown.Item>
-              </Link>
-              <Link to='/join-challenge'>
-                <NavDropdown.Item>Join challenge</NavDropdown.Item>
-              </Link>
-              <Link to='/create-challenge'>
-                <NavDropdown.Item>Create challenge</NavDropdown.Item>
-              </Link>
+              <NavDropdown.Item>
+                <Link to='/standings'>Standings</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <Link to='/team'>My team</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <Link to='/join-challenge'>Join challenge</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                <Link to='/create-challenge'>Create challenge</Link>
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Form inline>

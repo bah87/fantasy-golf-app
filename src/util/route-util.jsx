@@ -1,7 +1,8 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 
-export class ProtectedRoute extends React.Component {
+class Protected extends React.Component {
   render() {
     const { component: Component, path, loggedIn } = this.props;
     return (
@@ -14,3 +15,10 @@ export class ProtectedRoute extends React.Component {
     );
   }
 }
+
+export const ProtectedRoute = withRouter(
+  connect(
+    null,
+    null
+  )(Protected)
+);
