@@ -13,17 +13,8 @@ import { ProtectedRoute } from './util/route-util';
 import './App.css';
 
 export class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loading: false,
-      players: []
-    };
-  }
-
   componentDidMount() {
-    this.setState({ isLoading: true });
-    this.fetchPlayers();
+    this.props.fetchPlayers();
   }
 
   render() {
@@ -51,7 +42,7 @@ export class App extends Component {
             />
             <ProtectedRoute path='/standings' loggedIn component={Standings} />
             <ProtectedRoute path='/team' loggedIn component={Team} />
-            {this.state.players.map(playerData => {
+            {this.props.players.map(playerData => {
               const { pid, nameF, nameL } = playerData;
               return (
                 <ProtectedRoute
@@ -68,21 +59,4 @@ export class App extends Component {
       </div>
     );
   }
-
-  fetchPlayers = () => {
-    console.log('fetchPlayers called');
-    fetch('https://statdata.pgatour.com/players/player.json').then(
-      res =>
-        res.json().then(data => {
-          const players = data && data.plrs ? data.plrs : [];
-          this.setState({ loading: false, error: undefined, players });
-        }),
-      this.handleFetchError
-    );
-  };
-
-  handleFetchError = err => {
-    this.setState({ error: err });
-    console.log('Fetch error: ', err);
-  };
 }

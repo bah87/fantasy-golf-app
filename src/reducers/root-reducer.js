@@ -1,7 +1,6 @@
-export const rootReducer = (state = {}, action) => {
-  Object.freeze(state);
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
+import { combineReducers } from 'redux';
+import { playersReducer } from './players-reducer';
+
+export const rootReducer = combineReducers({
+  players: playersReducer
+});
