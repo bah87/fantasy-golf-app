@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { TournamentHeader } from './tournament-header/tournament-header';
+import { PlayerCellRenderer } from './player-cell-renderer';
 
 export class Leaderboard extends React.Component {
   constructor() {
@@ -15,7 +16,8 @@ export class Leaderboard extends React.Component {
           headerName: 'PLAYER',
           field: 'name',
           width: 150,
-          cellStyle: { textAlign: 'start' }
+          cellStyle: { textAlign: 'start' },
+          cellRendererFramework: PlayerCellRenderer
         },
         { headerName: 'TO PAR', field: 'toPar' },
         { headerName: 'TODAY', field: 'today' },
@@ -145,6 +147,7 @@ export class Leaderboard extends React.Component {
       const { first_name, last_name, country } = player.player_bio;
 
       return {
+        id: player.player_id,
         position: player.current_position,
         country,
         name: `${first_name} ${last_name}`,
