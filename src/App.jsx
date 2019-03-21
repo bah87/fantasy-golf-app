@@ -10,10 +10,22 @@ import { Standings } from './components/standings';
 import { JoinChallenge } from './components/join-challenge';
 import { CreateChallenge } from './components/create-challenge';
 import { ProtectedRoute } from './util/route-util';
-import { PLAYERS } from './util/player-data';
 import './App.css';
 
 export class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      loading: false,
+      players: []
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ isLoading: true });
+    this.fetchPlayers();
+  }
+
   render() {
     return (
       <div className='App'>
@@ -39,12 +51,12 @@ export class App extends Component {
             />
             <ProtectedRoute path='/standings' loggedIn component={Standings} />
             <ProtectedRoute path='/team' loggedIn component={Team} />
-            {PLAYERS.map(playerData => {
-              const { id, firstName, lastName } = playerData;
+            {this.state.players.map(playerData => {
+              const { pid, nameF, nameL } = playerData;
               return (
                 <ProtectedRoute
-                  key={id}
-                  path={`/player/${id}/${firstName}-${lastName}`}
+                  key={pid}
+                  path={`/player/${pid}/${nameF}-${nameL}`}
                   loggedIn
                   playerData={playerData}
                   component={Player}
@@ -56,4 +68,21 @@ export class App extends Component {
       </div>
     );
   }
+
+  fetchPlayers = () => {
+    console.log('fetchPlayers called');
+    fetch('https://statdata.pgatour.com/players/player.json').then(
+      res =>
+        res.json().then(data => {
+          const players = data && data.plrs ? data.plrs : [];
+          this.setState({ loading: false, error: undefined, players });
+        }),
+      this.handleFetchError
+    );
+  };
+
+  handleFetchError = err => {
+    this.setState({ error: err });
+    console.log('Fetch error: ', err);
+  };
 }
