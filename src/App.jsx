@@ -43,11 +43,11 @@ export class App extends Component {
             <ProtectedRoute path='/standings' loggedIn component={Standings} />
             <ProtectedRoute path='/team' loggedIn component={Team} />
             {this.props.players.map(playerData => {
-              const { pid, nameF, nameL } = playerData;
+              const { pid, firstName, lastName } = playerData;
               return (
                 <ProtectedRoute
                   key={pid}
-                  path={`/player/${pid}/${nameF}-${nameL}`}
+                  path={`/player/${pid}/${firstName}-${lastName}`}
                   loggedIn
                   playerData={playerData}
                   component={Player}
