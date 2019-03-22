@@ -1,3 +1,4 @@
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { App } from './App';
 import { fetchPlayers } from './actions/players-actions';
@@ -14,7 +15,9 @@ const mapDispatchToProps = (dispatch, _ownProps) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);
