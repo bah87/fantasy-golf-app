@@ -1,4 +1,5 @@
 import React from 'react';
+import * as moment from 'moment';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -99,8 +100,8 @@ export class Leaderboard extends React.Component {
   };
 
   mapScore = (score, status) => {
-    if (status === 'cut') {
-      return 'CUT';
+    if (status === 'cut' || status === 'wd') {
+      return status.toUpperCase();
     } else if (score > 0) {
       return `+${score}`;
     } else if (score === 0) {
@@ -111,9 +112,14 @@ export class Leaderboard extends React.Component {
   };
 
   mapThru = player => {
-    const { status, thru } = player;
-    if (status === 'cut') {
-      return 'CUT';
+    const { status, thru, rounds, current_round } = player;
+
+    if (status === 'cut' || status === 'wd') {
+      return status.toUpperCase();
+    } else if (!thru) {
+      const round = rounds[current_round - 1];
+      const teeTimeStr = round && round.tee_time;
+      return teeTimeStr ? moment(teeTimeStr).format('h:mm a') : '';
     } else if (thru === 18) {
       return 'F';
     } else {
