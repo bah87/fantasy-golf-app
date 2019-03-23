@@ -1,3 +1,5 @@
+import { PlayerModel } from '../models/player-model';
+
 const handleFetchError = err => {
   // should probably set something in redux store
   // for now just log for debugging
@@ -10,22 +12,8 @@ const handleFetchTournamentId = tid => {
   return fetch(`https://statdata.pgatour.com/r/${tid}/field.json`).then(
     data => {
       return data.json().then(fieldData => {
-        return fieldData.Tournament.Players.map(player => {
-          const {
-            PlayerName: fullName,
-            TournamentPlayerId: pid,
-            isMember
-          } = player;
-
-          const [lastName, firstName] = fullName.split(', ');
-
-          return {
-            fullName,
-            lastName,
-            firstName,
-            pid,
-            isMember: isMember === 'Yes'
-          };
+        return fieldData.Tournament.Players.map(playerData => {
+          return new PlayerModel(playerData);
         });
       });
     }

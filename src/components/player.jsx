@@ -9,13 +9,13 @@ export class Player extends React.Component {
     // `https://statdata.pgatour.com/r/${tid}/field.json`
     // `https://statdata.pgatour.com/players/player.json`
 
-    const { firstName, lastName, pid } = this.props.playerData;
+    const { firstName, lastName, id } = this.props.playerModel;
     return (
       <div>
         <div>{`Name: ${firstName} ${lastName}`}</div>
         <img
           alt='player-head-shot'
-          src={`https://pga-tour-res.cloudinary.com/image/upload/b_rgb:cecece,c_fill,d_headshots_default.png,f_jpg,g_face:center,q_auto,w_400/headshots_${pid}.png`}
+          src={`https://pga-tour-res.cloudinary.com/image/upload/b_rgb:cecece,c_fill,d_headshots_default.png,f_jpg,g_face:center,q_auto,w_400/headshots_${id}.png`}
         />
       </div>
     );
