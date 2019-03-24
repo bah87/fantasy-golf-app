@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import { TournamentModel } from '../models/tournament-model';
 import { TournamentHeader } from './tournament-header/tournament-header';
 import { PlayerCellRenderer } from './player-cell-renderer';
 
@@ -30,7 +31,7 @@ export class Leaderboard extends React.Component {
         { headerName: 'TOT', field: 'totalStrokes' }
       ],
       playerData: [],
-      tournamentData: undefined
+      tournament: undefined
     };
   }
 
@@ -49,7 +50,7 @@ export class Leaderboard extends React.Component {
           justifyContent: 'flex-start'
         }}
       >
-        {this.renderTournamentData()}
+        {this.renderTournamentHeader()}
         <div
           className='ag-theme-balham'
           style={{
@@ -68,10 +69,10 @@ export class Leaderboard extends React.Component {
     );
   }
 
-  renderTournamentData = () => {
+  renderTournamentHeader = () => {
     return (
-      this.state.tournamentData && (
-        <TournamentHeader {...this.state.tournamentData} />
+      this.state.tournament && (
+        <TournamentHeader tournament={this.state.tournament} />
       )
     );
   };
@@ -133,21 +134,10 @@ export class Leaderboard extends React.Component {
       return;
     }
 
-    const { course_id, course_name, par_total } = data.leaderboard.courses[0];
-
-    const tournamentData = {
-      tournamentId: data.leaderboard.tournament_id,
-      tournamentName: data.leaderboard.tournament_name,
-      tourName: data.leaderboard.tour_name,
-      startDate: data.leaderboard.start_date,
-      endDate: data.leaderboard.end_date,
-      courseId: course_id,
-      courseName: course_name,
-      parTotal: par_total,
-      lastUpdated: data.last_updated,
-      round: data.leaderboard.current_round,
-      roundState: data.leaderboard.round_state
-    };
+    const tournament = new TournamentModel({
+      ...data.leaderboard,
+      lastUpdated: data.last_updated
+    });
 
     const playerData = data.leaderboard.players.map(player => {
       const { first_name, last_name, country } = player.player_bio;
@@ -173,7 +163,7 @@ export class Leaderboard extends React.Component {
       isLoading: false,
       error: undefined,
       playerData,
-      tournamentData
+      tournament
     });
   };
 
