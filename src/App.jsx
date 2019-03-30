@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
-import { Leaderboard } from './components/leaderboard';
+import LeaderboardContainer from './components/leaderboard/leaderboard-container';
 import { Player } from './components/player';
 import { AppNavbar } from './components/app-navbar';
 import { Home } from './components/home';
@@ -26,7 +26,7 @@ export class App extends Component {
             <ProtectedRoute
               path='/leaderboard'
               loggedIn
-              component={Leaderboard}
+              component={LeaderboardContainer}
             />
             <ProtectedRoute exact path='/' loggedIn component={Home} />
             <ProtectedRoute path='/schedule' loggedIn component={Schedule} />
@@ -42,13 +42,13 @@ export class App extends Component {
             />
             <ProtectedRoute path='/standings' loggedIn component={Standings} />
             <ProtectedRoute path='/team' loggedIn component={Team} />
-            {this.props.players.map(playerModel => {
+            {this.props.players.map(player => {
               return (
                 <ProtectedRoute
-                  key={playerModel.id}
-                  path={playerModel.url}
+                  key={player.id}
+                  path={player.url}
                   loggedIn
-                  playerModel={playerModel}
+                  player={player}
                   component={Player}
                 />
               );

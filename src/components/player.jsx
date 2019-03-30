@@ -9,7 +9,7 @@ export class Player extends React.Component {
     // `https://statdata.pgatour.com/r/${tid}/field.json`
     // `https://statdata.pgatour.com/players/player.json`
 
-    const { firstName, lastName, id } = this.props.playerModel;
+    const { firstName, lastName, id } = this.props.player;
     return (
       <div>
         <div>{`Name: ${firstName} ${lastName}`}</div>

@@ -5,7 +5,7 @@ import { fetchPlayers } from './actions/players-actions';
 
 const mapStateToProps = (state, _ownProps) => {
   return {
-    players: state.players.players
+    players: Object.values(state.players)
   };
 };
 

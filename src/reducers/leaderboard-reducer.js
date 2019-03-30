@@ -1,10 +1,11 @@
+import merge from 'lodash/merge';
 import { RECEIVE_LEADERBOARD } from '../actions/leaderboard-actions';
 
-export const leaderboardReducer = (state = { leaderboard: [] }, action) => {
+export const leaderboardReducer = (state = {}, action) => {
   Object.freeze(state);
   switch (action.type) {
     case RECEIVE_LEADERBOARD:
-      return { leaderboard: action.leaderboard };
+      return merge({}, state, { tournament: action.leaderboard.tournament });
     default:
       return state;
   }
