@@ -62,11 +62,13 @@ export const getPlayerStats = stats => {
   const score = getScore(stats.score);
   const currentRound = stats.current_round;
   const teeTime = getTeeTime(rounds, currentRound);
+  const { first_name, last_name } = stats.player_bio;
 
   return {
     id: stats.player_id,
     rounds,
     currentRound,
+    fullName: `${first_name} ${last_name}`,
     score,
     teeTime,
     total: stats.total,

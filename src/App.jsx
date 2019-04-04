@@ -9,6 +9,7 @@ import { Team } from './components/team';
 import { Standings } from './components/standings';
 import { JoinChallenge } from './components/join-challenge';
 import { CreateChallenge } from './components/create-challenge';
+import AddSalariesContainer from './components/add-salaries/add-salaries-container';
 import { ProtectedRoute } from './util/route-util';
 import './App.css';
 
@@ -27,6 +28,11 @@ export class App extends Component {
               path='/leaderboard'
               loggedIn
               component={LeaderboardContainer}
+            />
+            <ProtectedRoute
+              path='/add-salaries'
+              loggedIn
+              component={AddSalariesContainer}
             />
             <ProtectedRoute exact path='/' loggedIn component={Home} />
             <ProtectedRoute path='/schedule' loggedIn component={Schedule} />
