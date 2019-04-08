@@ -20,20 +20,9 @@ const handleFetchTournamentData = data => {
   };
 };
 
-const handleFetchTournamentId = res => {
-  if (!res || !res.tid) {
-    console.log('Error fetching tournament id: ', res);
-    return;
-  }
-
-  return fetch(
-    `https://statdata.pgatour.com/r/${res.tid}/leaderboard-v2mini.json`
-  ).then(data => data.json().then(handleFetchTournamentData), handleFetchError);
-};
-
 export const fetchLeaderboard = () => {
-  return fetch('https://statdata.pgatour.com/r/current/message.json').then(
-    res => res.json().then(handleFetchTournamentId),
-    handleFetchError
-  );
+  const tid = '014'; // hardcoded for Masters
+  return fetch(
+    `https://statdata.pgatour.com/r/${tid}/leaderboard-v2mini.json`
+  ).then(data => data.json().then(handleFetchTournamentData), handleFetchError);
 };

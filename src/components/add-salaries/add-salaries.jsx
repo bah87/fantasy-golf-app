@@ -14,6 +14,19 @@ export class AddSalaries extends Component {
     };
   }
 
+  componentDidMount() {
+    fetch('https://statdata.pgatour.com/r/014/field.json').then(res =>
+      res.json().then(data => {
+        const players = data.Tournament.Players.map(player => {
+          const { TournamentPlayerId: id, PlayerName } = player;
+          const [last, first] = PlayerName.split(', ');
+          return { fullName: `${first} ${last}`, id };
+        });
+        this.setState({ players });
+      })
+    );
+  }
+
   render() {
     const { isLoading, isDataLoaded, players, errorMsg } = this.state;
 
@@ -72,12 +85,29 @@ export class AddSalaries extends Component {
     );
   }
 
+  addSalary = player => {
+    fetch('https://fantasy-golf-server.herokuapp.com/salaries', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ playerId: player.id, salary: player.salary })
+    }).then(res => {
+      console.log('...', res);
+      return res
+        .json()
+        .then(resp => console.log(resp), err => console.log('err: ', err));
+    });
+  };
+
   handleSubmit = () => {
     if (this.state.players.some(player => !player.salary)) {
       this.setState({ errorMsg: 'Please enter a salary for all players' });
       return;
     }
 
+    this.state.players.forEach(this.addSalary);
     this.setState({ errorMsg: '' });
   };
 
@@ -100,7 +130,7 @@ export class AddSalaries extends Component {
       salaries[row[2]] = row[5];
     });
 
-    const players = this.props.players.map(player => {
+    const players = this.state.players.map(player => {
       return { ...player, salary: salaries[player.fullName] };
     });
 

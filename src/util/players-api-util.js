@@ -7,8 +7,9 @@ const handleFetchError = err => {
   console.log('handleFetchError called: ', err);
 };
 
-// needs to be refactored
-const handleFetchTournamentId = tid => {
+export const fetchPlayers = () => {
+  console.log('fetchPlayers called');
+  const tid = '014'; // hardcoded for Masters
   return fetch(`https://statdata.pgatour.com/r/${tid}/field.json`).then(
     data => {
       return data.json().then(fieldData => {
@@ -16,14 +17,7 @@ const handleFetchTournamentId = tid => {
           return getPlayer(playerParams);
         });
       });
-    }
-  );
-};
-
-export const fetchPlayers = () => {
-  console.log('fetchPlayers called');
-  return fetch('https://statdata.pgatour.com/r/current/message.json').then(
-    res => res.json().then(data => handleFetchTournamentId(data.tid)),
+    },
     handleFetchError
   );
 };

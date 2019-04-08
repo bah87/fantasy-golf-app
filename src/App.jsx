@@ -4,12 +4,8 @@ import LeaderboardContainer from './components/leaderboard/leaderboard-container
 import { Player } from './components/player';
 import { AppNavbar } from './components/app-navbar';
 import { Home } from './components/home';
-import { Schedule } from './components/schedule';
 import { Team } from './components/team';
 import { Standings } from './components/standings';
-import { JoinChallenge } from './components/join-challenge';
-import { CreateChallenge } from './components/create-challenge';
-import AddSalariesContainer from './components/add-salaries/add-salaries-container';
 import { ProtectedRoute } from './util/route-util';
 import './App.css';
 
@@ -29,25 +25,9 @@ export class App extends Component {
               loggedIn
               component={LeaderboardContainer}
             />
-            <ProtectedRoute
-              path='/add-salaries'
-              loggedIn
-              component={AddSalariesContainer}
-            />
             <ProtectedRoute exact path='/' loggedIn component={Home} />
-            <ProtectedRoute path='/schedule' loggedIn component={Schedule} />
-            <ProtectedRoute
-              path='/join-challenge'
-              loggedIn
-              component={JoinChallenge}
-            />
-            <ProtectedRoute
-              path='/create-challenge'
-              loggedIn
-              component={CreateChallenge}
-            />
             <ProtectedRoute path='/standings' loggedIn component={Standings} />
-            <ProtectedRoute path='/team' loggedIn component={Team} />
+            <ProtectedRoute path='/create-team' loggedIn component={Team} />
             {this.props.players.map(player => {
               return (
                 <ProtectedRoute

@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
@@ -23,22 +22,11 @@ export class AppNavbar extends React.Component {
               <Link to='/leaderboard'>Leaderboard</Link>
             </Nav.Link>
             <Nav.Link>
-              <Link to='/schedule'>Schedule</Link>
+              <Link to='/standings'>Standings</Link>
             </Nav.Link>
-            <NavDropdown title='Fantasy' id='basic-nav-dropdown'>
-              <NavDropdown.Item>
-                <Link to='/standings'>Standings</Link>
-              </NavDropdown.Item>
-              <NavDropdown.Item>
-                <Link to='/team'>My team</Link>
-              </NavDropdown.Item>
-              <NavDropdown.Item>
-                <Link to='/join-challenge'>Join challenge</Link>
-              </NavDropdown.Item>
-              <NavDropdown.Item>
-                <Link to='/create-challenge'>Create challenge</Link>
-              </NavDropdown.Item>
-            </NavDropdown>
+            <Nav.Link>
+              <Link to='/create-team'>Create Team</Link>
+            </Nav.Link>
           </Nav>
           <Form inline>
             <FormControl
