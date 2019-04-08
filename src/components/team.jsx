@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getPlayer } from '../util/player';
 
@@ -56,6 +57,9 @@ export class Team extends React.Component {
     salaryData.forEach(player => {
       if (playerMap[player.player_id]) {
         playerMap[player.player_id].salary = player.salary;
+      } else {
+        // update ids in db to be strings
+        playerMap['0' + player.player_id].salary = player.salary;
       }
     });
 
@@ -76,7 +80,7 @@ export class Team extends React.Component {
             placeholder='Enter full name'
           />
         </Form.Group>
-        <div className='d-flex flex-row align-items-start justify-content-space-between'>
+        <div className='d-flex flex-row align-items-start justify-content-around w-100 mt-5'>
           <div
             className='ag-theme-balham'
             style={{
@@ -90,18 +94,28 @@ export class Team extends React.Component {
               onCellClicked={this.handlePlayerAdded}
             />
           </div>
-          <div
-            className='ag-theme-balham ml-3'
-            style={{
-              height: '200px',
-              width: '280px'
-            }}
-          >
-            <AgGridReact
-              columnDefs={getColDefs('team')}
-              rowData={team}
-              onCellClicked={this.handlePlayerRemoved}
-            />
+          <div className='d-flex flex-column align-items-center justify-content-start ml-3'>
+            <div
+              className='ag-theme-balham'
+              style={{
+                height: '200px',
+                width: '280px'
+              }}
+            >
+              <AgGridReact
+                columnDefs={getColDefs('team')}
+                rowData={team}
+                onCellClicked={this.handlePlayerRemoved}
+              />
+            </div>
+            <div className='d-flex flex-row align-items-center justify-content-around w-100 mt-4'>
+              <Button onClick={this.clearTeam} size='sm' variant='secondary'>
+                Clear team
+              </Button>
+              <Button onClick={this.submitTeam} size='sm' variant='primary'>
+                Submit team
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -126,7 +140,12 @@ export class Team extends React.Component {
     this.setState({ name: e.target.value });
   };
 
-  handleSubmit = () => {
-    //
+  clearTeam = () => {
+    const players = [...this.state.players, ...this.state.team];
+    this.setState({ players, team: [] });
+  };
+
+  submitTeam = () => {
+    console.log('Submitting team...');
   };
 }
