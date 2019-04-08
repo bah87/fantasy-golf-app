@@ -4,16 +4,23 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import Form from 'react-bootstrap/Form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getPlayer } from '../util/player';
 
 const plusIcon = () => <FontAwesomeIcon icon='plus-circle' />;
 const minusIcon = () => <FontAwesomeIcon icon='minus-circle' />;
 
 const getColDefs = type => {
   return [
-    { headerName: 'PLAYER', field: 'id' },
-    { headerName: 'SALARY', field: 'salary' },
     {
-      width: 50,
+      headerName: 'PLAYER',
+      field: 'fullName',
+      width: 150,
+      cellStyle: { textAlign: 'start' }
+    },
+    { headerName: 'SALARY', field: 'salary', width: 90 },
+    {
+      width: 40,
+      cellStyle: { cursor: 'pointer' },
       cellRendererFramework: type === 'players' ? plusIcon : minusIcon
     }
   ];
@@ -29,17 +36,31 @@ export class Team extends React.Component {
     };
   }
 
-  componentDidMount() {
-    fetch('https://fantasy-golf-server.herokuapp.com/salaries').then(res =>
-      res.json().then(players =>
-        this.setState({
-          players: players.map(player => ({
-            id: player.player_id,
-            salary: player.salary
-          }))
-        })
-      )
+  async componentDidMount() {
+    // get player data
+    const fieldResp = await fetch(
+      'https://statdata.pgatour.com/r/014/field.json'
     );
+    const fieldData = await fieldResp.json();
+    const playerMap = {};
+    fieldData.Tournament.Players.forEach(playerParams => {
+      const player = getPlayer(playerParams);
+      playerMap[player.id] = player;
+    });
+
+    // get player salaries
+    const salaryResp = await fetch(
+      'https://fantasy-golf-server.herokuapp.com/salaries'
+    );
+    const salaryData = await salaryResp.json();
+    salaryData.forEach(player => {
+      if (playerMap[player.player_id]) {
+        playerMap[player.player_id].salary = player.salary;
+      }
+    });
+
+    // update state
+    this.setState({ players: Object.values(playerMap) });
   }
 
   render() {
@@ -60,26 +81,24 @@ export class Team extends React.Component {
             className='ag-theme-balham'
             style={{
               height: '400px',
-              width: '250px'
+              width: '280px'
             }}
           >
             <AgGridReact
               columnDefs={getColDefs('players')}
-              defaultColDef={{ width: 100 }}
               rowData={players.sort((a, b) => b.salary - a.salary)}
               onCellClicked={this.handlePlayerAdded}
             />
           </div>
           <div
-            className='ag-theme-balham'
+            className='ag-theme-balham ml-3'
             style={{
-              height: '400px',
-              width: '250px'
+              height: '200px',
+              width: '280px'
             }}
           >
             <AgGridReact
               columnDefs={getColDefs('team')}
-              defaultColDef={{ width: 100 }}
               rowData={team}
               onCellClicked={this.handlePlayerRemoved}
             />
