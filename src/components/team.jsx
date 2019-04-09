@@ -233,7 +233,7 @@ export class Team extends React.Component {
       return;
     }
 
-    fetch('https://fantasy-golf-server.herokuapp.com/team', {
+    fetch('https://fantasy-golf-server.herokuapp.com/teams', {
       method: 'POST',
       mode: 'cors',
       headers: {
