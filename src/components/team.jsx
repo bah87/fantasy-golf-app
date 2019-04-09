@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import Alert from 'react-bootstrap/Alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getPlayer } from '../util/player';
 
@@ -17,7 +18,9 @@ export class Team extends React.Component {
       players: [],
       team: [],
       name: '',
-      playerSearch: ''
+      playerSearch: '',
+      error: '',
+      isSubmitted: false
     };
   }
 
@@ -47,7 +50,14 @@ export class Team extends React.Component {
   }
 
   render() {
-    const { name, team, remainingSalary, playerSearch } = this.state;
+    const {
+      name,
+      team,
+      remainingSalary,
+      playerSearch,
+      error,
+      isSubmitted
+    } = this.state;
 
     return (
       <div className='d-flex flex-column align-items-center justify-content-start mt-2'>
@@ -112,6 +122,16 @@ export class Team extends React.Component {
                 {this.formatSalary(remainingSalary)}
               </span>
             </div>
+            {error && (
+              <Alert className='small mb-1' variant='danger'>
+                {error}
+              </Alert>
+            )}
+            {isSubmitted && (
+              <Alert className='small mb-1' variant='success'>
+                Team submitted successfully
+              </Alert>
+            )}
             <div className='d-flex flex-row align-items-center justify-content-around w-100 mt-2'>
               <Button onClick={this.clearTeam} size='sm' variant='secondary'>
                 Clear team
@@ -132,7 +152,7 @@ export class Team extends React.Component {
 
   displayPlayers = () => {
     const { players, playerSearch } = this.state;
-    const regex = new RegExp(playerSearch);
+    const regex = new RegExp(playerSearch.toLowerCase());
     return players
       .filter(p => regex.test(p.fullName.toLowerCase()))
       .sort((a, b) => b.salary - a.salary);
@@ -229,7 +249,14 @@ export class Team extends React.Component {
 
   submitTeam = () => {
     const { name, team, remainingSalary } = this.state;
-    if (!name || team.length !== 6 || remainingSalary < 0) {
+    if (!name) {
+      this.setState({ error: 'Please enter a name' });
+      return;
+    } else if (team.length !== 6) {
+      this.setState({ error: 'Please select 6 players' });
+      return;
+    } else if (remainingSalary < 0) {
+      this.setState({ error: 'Salary exceeds $50K' });
       return;
     }
 
@@ -240,14 +267,28 @@ export class Team extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ name, team: team.map(player => player.id) })
-    }).then(res => {
-      console.log('createTeam response 1: ', res);
-      return res
-        .json()
-        .then(
-          resp => console.log('createTeam response 2: ', resp),
-          err => console.log('err: ', err)
-        );
-    });
+    })
+      .then(res => {
+        console.log('createTeam response: ', res);
+        return res
+          .json()
+          .then(resp => {
+            console.log('createTeam json: ', resp);
+            if (
+              resp &&
+              resp.error &&
+              resp.error.constraint === 'teams_name_key'
+            ) {
+              this.setState({
+                error: 'Provided name is already taken',
+                isSubmitted: false
+              });
+            } else if (resp && resp.status === 'success') {
+              this.setState({ error: '', isSubmitted: true });
+            }
+          })
+          .catch(err => console.log('createTeam json failed: ', err));
+      })
+      .catch(err => console.log('createTeam failed: ', err));
   };
 }
