@@ -92,7 +92,7 @@ export class AddSalaries extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ playerId: player.id, salary: player.salary })
+      body: JSON.stringify({ playerId: `${player.id}`, salary: player.salary })
     }).then(res => {
       console.log('...', res);
       return res

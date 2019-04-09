@@ -39,12 +39,7 @@ export class Team extends React.Component {
     );
     const salaryData = await salaryResp.json();
     salaryData.forEach(player => {
-      if (playerMap[player.player_id]) {
-        playerMap[player.player_id].salary = player.salary;
-      } else {
-        // update ids in db to be strings
-        playerMap['0' + player.player_id].salary = player.salary;
-      }
+      playerMap[player.player_id].salary = parseInt(player.salary);
     });
 
     // update state
@@ -55,7 +50,7 @@ export class Team extends React.Component {
     const { name, team, remainingSalary, playerSearch } = this.state;
 
     return (
-      <div className='d-flex flex-column align-items-center justify-content-start'>
+      <div className='d-flex flex-column align-items-center justify-content-start mt-2'>
         <Form.Group>
           <Form.Control
             onChange={this.handleName}
@@ -233,6 +228,26 @@ export class Team extends React.Component {
   };
 
   submitTeam = () => {
-    console.log('Submitting team...');
+    const { name, team, remainingSalary } = this.state;
+    if (!name || team.length !== 6 || remainingSalary < 0) {
+      return;
+    }
+
+    fetch('https://fantasy-golf-server.herokuapp.com/team', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, team: team.map(player => player.id) })
+    }).then(res => {
+      console.log('createTeam response 1: ', res);
+      return res
+        .json()
+        .then(
+          resp => console.log('createTeam response 2: ', resp),
+          err => console.log('err: ', err)
+        );
+    });
   };
 }
