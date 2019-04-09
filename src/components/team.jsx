@@ -16,7 +16,8 @@ export class Team extends React.Component {
       remainingSalary: 50000,
       players: [],
       team: [],
-      name: ''
+      name: '',
+      playerSearch: ''
     };
   }
 
@@ -51,7 +52,7 @@ export class Team extends React.Component {
   }
 
   render() {
-    const { name, players, team, remainingSalary } = this.state;
+    const { name, team, remainingSalary, playerSearch } = this.state;
 
     return (
       <div className='d-flex flex-column align-items-center justify-content-start'>
@@ -66,9 +67,18 @@ export class Team extends React.Component {
         <div className='d-flex flex-row align-items-start justify-content-around w-100 mt-5'>
           <div d-flex flex-column align-items-center justify-content-start>
             <InputGroup className='mb-3'>
-              <FormControl placeholder='Player search' />
+              <FormControl
+                value={playerSearch}
+                onChange={this.handlePlayerSearch}
+                placeholder='Player search'
+              />
               <InputGroup.Append>
-                <Button variant='outline-secondary'>Clear</Button>
+                <Button
+                  onClick={this.clearPlayerSearch}
+                  variant='outline-secondary'
+                >
+                  Clear
+                </Button>
               </InputGroup.Append>
             </InputGroup>
             <div
@@ -80,7 +90,7 @@ export class Team extends React.Component {
             >
               <AgGridReact
                 columnDefs={this.getColDefs('players')}
-                rowData={players.sort((a, b) => b.salary - a.salary)}
+                rowData={this.displayPlayers()}
                 onCellClicked={this.handlePlayerAdded}
               />
             </div>
@@ -120,6 +130,18 @@ export class Team extends React.Component {
       </div>
     );
   }
+
+  clearPlayerSearch = () => {
+    this.setState({ playerSearch: '' });
+  };
+
+  displayPlayers = () => {
+    const { players, playerSearch } = this.state;
+    const regex = new RegExp(playerSearch);
+    return players
+      .filter(p => regex.test(p.fullName.toLowerCase()))
+      .sort((a, b) => b.salary - a.salary);
+  };
 
   formatSalary = salary => {
     const formatted = new Intl.NumberFormat('en-US', {
@@ -199,6 +221,10 @@ export class Team extends React.Component {
 
   handleName = e => {
     this.setState({ name: e.target.value });
+  };
+
+  handlePlayerSearch = e => {
+    this.setState({ playerSearch: e.target.value });
   };
 
   clearTeam = () => {
