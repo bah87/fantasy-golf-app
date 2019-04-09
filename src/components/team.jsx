@@ -4,33 +4,16 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getPlayer } from '../util/player';
-
-const plusIcon = () => <FontAwesomeIcon icon='plus-circle' />;
-const minusIcon = () => <FontAwesomeIcon icon='minus-circle' />;
-
-const getColDefs = type => {
-  return [
-    {
-      headerName: 'PLAYER',
-      field: 'fullName',
-      width: 150,
-      cellStyle: { textAlign: 'start' }
-    },
-    { headerName: 'SALARY', field: 'salary', width: 90 },
-    {
-      width: 40,
-      cellStyle: { cursor: 'pointer' },
-      cellRendererFramework: type === 'players' ? plusIcon : minusIcon
-    }
-  ];
-};
 
 export class Team extends React.Component {
   constructor() {
     super();
     this.state = {
+      remainingSalary: 50000,
       players: [],
       team: [],
       name: ''
@@ -68,7 +51,7 @@ export class Team extends React.Component {
   }
 
   render() {
-    const { name, players, team } = this.state;
+    const { name, players, team, remainingSalary } = this.state;
 
     return (
       <div className='d-flex flex-column align-items-center justify-content-start'>
@@ -81,18 +64,26 @@ export class Team extends React.Component {
           />
         </Form.Group>
         <div className='d-flex flex-row align-items-start justify-content-around w-100 mt-5'>
-          <div
-            className='ag-theme-balham'
-            style={{
-              height: '400px',
-              width: '280px'
-            }}
-          >
-            <AgGridReact
-              columnDefs={getColDefs('players')}
-              rowData={players.sort((a, b) => b.salary - a.salary)}
-              onCellClicked={this.handlePlayerAdded}
-            />
+          <div d-flex flex-column align-items-center justify-content-start>
+            <InputGroup className='mb-3'>
+              <FormControl placeholder='Player search' />
+              <InputGroup.Append>
+                <Button variant='outline-secondary'>Clear</Button>
+              </InputGroup.Append>
+            </InputGroup>
+            <div
+              className='ag-theme-balham'
+              style={{
+                height: '400px',
+                width: '280px'
+              }}
+            >
+              <AgGridReact
+                columnDefs={this.getColDefs('players')}
+                rowData={players.sort((a, b) => b.salary - a.salary)}
+                onCellClicked={this.handlePlayerAdded}
+              />
+            </div>
           </div>
           <div className='d-flex flex-column align-items-center justify-content-start ml-3'>
             <div
@@ -103,12 +94,20 @@ export class Team extends React.Component {
               }}
             >
               <AgGridReact
-                columnDefs={getColDefs('team')}
+                columnDefs={this.getColDefs('team')}
                 rowData={team}
                 onCellClicked={this.handlePlayerRemoved}
               />
             </div>
-            <div className='d-flex flex-row align-items-center justify-content-around w-100 mt-4'>
+            <div className='w-100 mt-2 h5'>
+              <span className='mr-1'>Remaining salary:</span>
+              <span
+                className={remainingSalary < 0 ? 'text-danger' : 'text-success'}
+              >
+                {this.formatSalary(remainingSalary)}
+              </span>
+            </div>
+            <div className='d-flex flex-row align-items-center justify-content-around w-100 mt-2'>
               <Button onClick={this.clearTeam} size='sm' variant='secondary'>
                 Clear team
               </Button>
@@ -122,18 +121,80 @@ export class Team extends React.Component {
     );
   }
 
+  formatSalary = salary => {
+    const formatted = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(salary);
+
+    return formatted.split('.')[0];
+  };
+
+  showAddIcon = salary => {
+    return salary <= this.state.remainingSalary && this.state.team.length < 6;
+  };
+
+  plusIcon = props => {
+    return (
+      <FontAwesomeIcon
+        style={{ cursor: 'pointer' }}
+        className={
+          props.data.salary > this.state.remainingSalary
+            ? 'text-danger'
+            : 'text-success'
+        }
+        icon='plus-circle'
+      />
+    );
+  };
+
+  minusIcon = () => (
+    <FontAwesomeIcon
+      style={{ cursor: 'pointer' }}
+      className='text-danger'
+      icon='minus-circle'
+    />
+  );
+
+  getColDefs = type => {
+    return [
+      {
+        headerName: 'PLAYER',
+        field: 'fullName',
+        width: 150,
+        cellStyle: { textAlign: 'start' }
+      },
+      { headerName: 'SALARY', field: 'salary', width: 90 },
+      {
+        width: 40,
+        cellRendererFramework:
+          type === 'players' ? this.plusIcon : this.minusIcon
+      }
+    ];
+  };
+
   handlePlayerAdded = cell => {
+    if (cell.value || this.state.team.length === 6) {
+      return;
+    }
+
     const team = [...this.state.team, cell.data];
     const players = this.state.players.filter(
       player => player.id !== cell.data.id
     );
-    this.setState({ team, players });
+    const remainingSalary = this.state.remainingSalary - cell.data.salary;
+    this.setState({ team, players, remainingSalary });
   };
 
   handlePlayerRemoved = cell => {
+    if (cell.value) {
+      return;
+    }
+
     const players = [...this.state.players, cell.data];
     const team = this.state.team.filter(player => player.id !== cell.data.id);
-    this.setState({ team, players });
+    const remainingSalary = this.state.remainingSalary + cell.data.salary;
+    this.setState({ team, players, remainingSalary });
   };
 
   handleName = e => {
@@ -142,7 +203,7 @@ export class Team extends React.Component {
 
   clearTeam = () => {
     const players = [...this.state.players, ...this.state.team];
-    this.setState({ players, team: [] });
+    this.setState({ players, team: [], remainingSalary: 50000 });
   };
 
   submitTeam = () => {
