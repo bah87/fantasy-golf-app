@@ -16,6 +16,7 @@ export class UpdateTeam extends React.Component {
     this.state = {
       remainingSalary: 50000,
       players: [],
+      playerMap: {},
       team: [],
       playerSearch: '',
       error: '',
@@ -58,7 +59,7 @@ export class UpdateTeam extends React.Component {
     });
 
     // update state
-    this.setState({ players: Object.values(playerMap), teamsMap });
+    this.setState({ players: Object.values(playerMap), teamsMap, playerMap });
   }
 
   render() {
@@ -175,7 +176,8 @@ export class UpdateTeam extends React.Component {
   selectTeam = id => {
     return () => {
       const selectedTeam = this.state.teamsMap[id];
-      this.setState({ selectedTeam, team: selectedTeam.players });
+      const team = selectedTeam.players.map(id => this.state.playerMap[id]);
+      this.setState({ selectedTeam, team });
     };
   };
 
