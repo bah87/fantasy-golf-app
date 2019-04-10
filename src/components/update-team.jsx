@@ -45,7 +45,9 @@ export class UpdateTeam extends React.Component {
     );
     const salaryData = await salaryResp.json();
     salaryData.forEach(player => {
-      playerMap[player.player_id].salary = parseInt(player.salary);
+      if (playerMap[player.player_id]) {
+        playerMap[player.player_id].salary = parseInt(player.salary);
+      }
     });
 
     // get teams
