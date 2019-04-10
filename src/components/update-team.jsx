@@ -175,7 +175,7 @@ export class UpdateTeam extends React.Component {
   selectTeam = id => {
     return () => {
       const selectedTeam = this.state.teamsMap[id];
-      this.setState({ selectedTeam, team: selectedTeam.team });
+      this.setState({ selectedTeam, team: selectedTeam.players });
     };
   };
 
