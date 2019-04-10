@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
-// import LeaderboardContainer from './components/leaderboard/leaderboard-container';
+import LeaderboardContainer from './components/leaderboard/leaderboard-container';
 // import { Player } from './components/player';
 // import { AppNavbar } from './components/app-navbar';
 // import { Home } from './components/home';
@@ -21,11 +21,11 @@ export class App extends Component {
         {/* <AppNavbar /> */}
         <header className='App-header'>
           <Switch>
-            {/* <ProtectedRoute
-              path='/leaderboard'
+            <ProtectedRoute
+              path='/secret-leaderboard'
               loggedIn
               component={LeaderboardContainer}
-            /> */}
+            />
             {/* <ProtectedRoute path='/salaries' loggedIn component={AddSalaries} />
             <ProtectedRoute exact path='/' loggedIn component={Home} />
             <ProtectedRoute path='/standings' loggedIn component={Standings} /> */}

@@ -5,7 +5,7 @@ export const leaderboardReducer = (state = {}, action) => {
   Object.freeze(state);
   switch (action.type) {
     case RECEIVE_LEADERBOARD:
-      return merge({}, state, { tournament: action.leaderboard.tournament });
+      return merge({}, state, { tournament: action.leaderboard });
     default:
       return state;
   }
