@@ -5,6 +5,7 @@ import LeaderboardContainer from './components/leaderboard/leaderboard-container
 // import { AppNavbar } from './components/app-navbar';
 // import { Home } from './components/home';
 import { Team } from './components/team';
+import { UpdateTeam } from './components/update-team';
 // import { Standings } from './components/standings';
 import { ProtectedRoute } from './util/route-util';
 import './App.css';
@@ -30,6 +31,11 @@ export class App extends Component {
             <ProtectedRoute exact path='/' loggedIn component={Home} />
             <ProtectedRoute path='/standings' loggedIn component={Standings} /> */}
             <ProtectedRoute path='/create-team' loggedIn component={Team} />
+            <ProtectedRoute
+              path='/update-team'
+              loggedIn
+              component={UpdateTeam}
+            />
             {/* {this.props.players.map(player => {
               return (
                 <ProtectedRoute
