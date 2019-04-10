@@ -20,7 +20,8 @@ export class Team extends React.Component {
       name: '',
       playerSearch: '',
       error: '',
-      isSubmitted: false
+      isSubmitted: false,
+      isSubmitDisabled: false
     };
   }
 
@@ -56,7 +57,8 @@ export class Team extends React.Component {
       remainingSalary,
       playerSearch,
       error,
-      isSubmitted
+      isSubmitted,
+      isSubmitDisabled
     } = this.state;
 
     return (
@@ -136,7 +138,12 @@ export class Team extends React.Component {
               <Button onClick={this.clearTeam} size='sm' variant='secondary'>
                 Clear team
               </Button>
-              <Button onClick={this.submitTeam} size='sm' variant='primary'>
+              <Button
+                disabled={isSubmitDisabled}
+                onClick={this.submitTeam}
+                size='sm'
+                variant='primary'
+              >
                 Submit team
               </Button>
             </div>
@@ -145,6 +152,16 @@ export class Team extends React.Component {
       </div>
     );
   }
+
+  setIsSubmitted = isSubmitted => {
+    this.setState({ isSubmitted });
+    setTimeout(() => this.setState({ isSubmitted: !isSubmitted }), 2500);
+  };
+
+  setError = error => {
+    this.setState({ error });
+    setTimeout(() => this.setState({ error: '' }), 2500);
+  };
 
   clearPlayerSearch = () => {
     this.setState({ playerSearch: '' });
@@ -250,15 +267,17 @@ export class Team extends React.Component {
   submitTeam = () => {
     const { name, team, remainingSalary } = this.state;
     if (!name) {
-      this.setState({ error: 'Please enter a name' });
+      this.setError('Please enter a name');
       return;
     } else if (team.length !== 6) {
-      this.setState({ error: 'Please select 6 players' });
+      this.setError('Please select 6 players');
       return;
     } else if (remainingSalary < 0) {
-      this.setState({ error: 'Salary exceeds $50K' });
+      this.setError('Salary exceeds $50K');
       return;
     }
+
+    this.setState({ isSubmitDisabled: true });
 
     fetch('https://fantasy-golf-server.herokuapp.com/teams', {
       method: 'POST',
@@ -279,16 +298,27 @@ export class Team extends React.Component {
               resp.error &&
               resp.error.constraint === 'teams_name_key'
             ) {
-              this.setState({
-                error: 'Provided name is already taken',
-                isSubmitted: false
-              });
+              this.setError('Provided name is already taken');
+              this.setState({ isSubmitted: false });
             } else if (resp && resp.status === 'success') {
-              this.setState({ error: '', isSubmitted: true });
+              this.setIsSubmitted(true);
+              this.setState({ error: '' });
             }
+            this.setState({ isSubmitDisabled: false });
           })
-          .catch(err => console.log('createTeam json failed: ', err));
+          .catch(err => {
+            console.log('createTeam json failed: ', err);
+            this.handleError();
+          });
       })
-      .catch(err => console.log('createTeam failed: ', err));
+      .catch(err => {
+        console.log('createTeam failed: ', err);
+        this.handleError();
+      });
+  };
+
+  handleError = () => {
+    this.setError('There was an error submitting your team.');
+    this.setState({ isSubmitDisabled: false });
   };
 }
