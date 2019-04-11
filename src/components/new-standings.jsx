@@ -37,21 +37,25 @@ export class NewStandings extends React.Component {
   render() {
     return this.getTeams().map(team => {
       return (
-        <div className='d-flex flex-column align-items-center justify-content-start mt-2'>
-          <div className='h3'>{`${team.name}: ${team.score}`}</div>
-          <div className='h6'>{team.pos}</div>
-          <div
-            className='ag-theme-balham'
-            style={{
-              height: '500px',
-              width: '375px'
-            }}
-          >
-            <AgGridReact
-              columnDefs={COL_DEFS}
-              defaultColDef={{ width: 100 }}
-              rowData={team.players}
-            />
+        <div className='d-flex flex-column align-items-center justify-content-start mt-3'>
+          <div className='d-flex flex-column align-items-end justify-content-start'>
+            <div className='d-flex'>
+              <div className='h3 text-primary mr-3'>{team.pos}</div>
+              <div className='h3'>{`${team.name}: ${team.score}`}</div>
+            </div>
+            <div
+              className='ag-theme-balham'
+              style={{
+                height: '188px',
+                width: '420px'
+              }}
+            >
+              <AgGridReact
+                columnDefs={COL_DEFS}
+                defaultColDef={{ width: 100 }}
+                rowData={team.players}
+              />
+            </div>
           </div>
         </div>
       );
