@@ -12,7 +12,7 @@ export class AppNavbar extends React.Component {
     return (
       <Navbar bg='light' expand='lg'>
         <FontAwesomeIcon style={{ marginRight: '8px' }} icon='golf-ball' />
-        <Link to='/'>
+        <Link to='/leaderboard'>
           <Navbar.Brand>Fantasy Golf</Navbar.Brand>
         </Link>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -23,9 +23,6 @@ export class AppNavbar extends React.Component {
             </Nav.Link>
             <Nav.Link>
               <Link to='/standings'>Standings</Link>
-            </Nav.Link>
-            <Nav.Link>
-              <Link to='/create-team'>Create Team</Link>
             </Nav.Link>
           </Nav>
           <Form inline>
