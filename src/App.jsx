@@ -30,24 +30,8 @@ export class App extends Component {
             <ProtectedRoute
               path='/standings'
               loggedIn
-              component={StandingsContainer}
-            />
-            <ProtectedRoute
-              path='/new-standings'
-              loggedIn
               component={NewStandingsContainer}
             />
-            {/* {this.props.players.map(player => {
-              return (
-                <ProtectedRoute
-                  key={player.id}
-                  path={player.url}
-                  loggedIn
-                  player={player}
-                  component={Player}
-                />
-              );
-            })} */}
           </Switch>
         </header>
       </div>
