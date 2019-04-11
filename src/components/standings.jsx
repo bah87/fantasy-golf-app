@@ -3,6 +3,16 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
+const COL_DEFS = [
+  {
+    headerName: 'TEAM',
+    field: 'name',
+    width: 100,
+    cellStyle: { textAlign: 'start' }
+  },
+  { headerName: 'SCORE', field: 'score', width: 75 }
+];
+
 export class Standings extends React.Component {
   constructor() {
     super();
@@ -20,12 +30,15 @@ export class Standings extends React.Component {
   }
 
   render() {
-    return (
-      <ul>
-        {this.state.teams.map(team => {
-          return <li key={team.id}>{team.name}</li>;
-        })}
-      </ul>
-    );
+    return <AgGridReact columnDefs={COL_DEFS} rowData={this.getTeams()} />;
   }
+
+  getTeams = () => {
+    return this.state.teams.map(team => ({
+      name: team.name,
+      score: team.players
+        .map(p => this.props.players[p.id].score)
+        .reduce((acc, val) => acc + val)
+    }));
+  };
 }
