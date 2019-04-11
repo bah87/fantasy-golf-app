@@ -3,7 +3,6 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import groupBy from 'lodash/groupBy';
-import PacmanLoader from 'react-spinners/PacmanLoader';
 import { PlayerCellRenderer } from './player-cell-renderer';
 
 const COL_DEFS = [
@@ -20,45 +19,35 @@ const COL_DEFS = [
 ];
 
 export class DetailedStandings extends React.Component {
-  constructor() {
-    super();
-    this.state = { isLoading: true };
-  }
-
   render() {
-    const teams = this.getTeams();
-    return this.state.isLoading ? (
-      <PacmanLoader sizeUnit={'px'} size={25} color={'#36D7B7'} loading />
-    ) : (
-      teams.map(team => {
-        return (
-          <div className='d-flex flex-column align-items-center justify-content-start mt-3'>
-            <div className='d-flex flex-row align-items-start justify-content-between'>
-              <div className='h3 text-primary mr-3'>{team.pos}</div>
-              <div className='d-flex flex-column align-items-center justify-content-start'>
-                <div className='h3'>
-                  {`${team.name} `}
-                  <strong className='text-primary'>{team.score}</strong>
-                </div>
-                <div
-                  className='ag-theme-balham'
-                  style={{
-                    height: '200px',
-                    width: '420px'
-                  }}
-                >
-                  <AgGridReact
-                    columnDefs={COL_DEFS}
-                    defaultColDef={{ width: 100 }}
-                    rowData={team.players}
-                  />
-                </div>
+    return this.getTeams().map(team => {
+      return (
+        <div className='d-flex flex-column align-items-center justify-content-start mt-3'>
+          <div className='d-flex flex-row align-items-center justify-content-between'>
+            <div className='h3 text-primary mr-3'>{team.pos}</div>
+            <div className='d-flex flex-column align-items-center justify-content-start'>
+              <div className='h3'>
+                {`${team.name} `}
+                <strong className='text-primary'>{team.score}</strong>
+              </div>
+              <div
+                className='ag-theme-balham'
+                style={{
+                  height: '200px',
+                  width: '420px'
+                }}
+              >
+                <AgGridReact
+                  columnDefs={COL_DEFS}
+                  defaultColDef={{ width: 100 }}
+                  rowData={team.players}
+                />
               </div>
             </div>
           </div>
-        );
-      })
-    );
+        </div>
+      );
+    });
   }
 
   getTeams = () => {
@@ -74,10 +63,6 @@ export class DetailedStandings extends React.Component {
         }))
       : [];
 
-    if (this.state.isLoading) {
-      this.setState({ isLoading: false });
-    }
-
     return this.generateStandings(teams);
   };
 
@@ -88,10 +73,7 @@ export class DetailedStandings extends React.Component {
     Object.keys(grouped)
       .sort((a, b) => a - b)
       .forEach(key => {
-        let actualPos = `${pos}`;
-        if (grouped[key].length > 1) {
-          actualPos = `T${actualPos}`;
-        }
+        const actualPos = grouped[key].length > 1 ? `T${pos}` : ` ${pos}`;
 
         const labeledTeams = grouped[key].map(team => ({
           ...team,
