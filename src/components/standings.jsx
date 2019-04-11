@@ -7,7 +7,8 @@ const COL_DEFS = [
   {
     headerName: 'TEAM',
     field: 'name',
-    cellStyle: { textAlign: 'start' }
+    cellStyle: { textAlign: 'start' },
+    width: 200
   },
   { headerName: 'SCORE', field: 'score' }
 ];
@@ -34,7 +35,7 @@ export class Standings extends React.Component {
         className='ag-theme-balham'
         style={{
           height: '500px',
-          width: '200px'
+          width: '300px'
         }}
       >
         <AgGridReact

@@ -26,12 +26,6 @@ export class App extends Component {
               loggedIn
               component={LeaderboardContainer}
             />
-            <ProtectedRoute path='/create-team' loggedIn component={Team} />
-            <ProtectedRoute
-              path='/update-team'
-              loggedIn
-              component={UpdateTeam}
-            />
             <ProtectedRoute
               path='/standings'
               loggedIn

@@ -21,12 +21,6 @@ export class AppNavbar extends React.Component {
             <Nav.Link>
               <Link to='/standings'>Standings</Link>
             </Nav.Link>
-            <Nav.Link>
-              <Link to='/create-team'>Create Team</Link>
-            </Nav.Link>
-            <Nav.Link>
-              <Link to='/update-team'>Update Team</Link>
-            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
