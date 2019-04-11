@@ -7,10 +7,9 @@ const COL_DEFS = [
   {
     headerName: 'TEAM',
     field: 'name',
-    width: 100,
     cellStyle: { textAlign: 'start' }
   },
-  { headerName: 'SCORE', field: 'score', width: 75 }
+  { headerName: 'SCORE', field: 'score' }
 ];
 
 export class Standings extends React.Component {
@@ -30,15 +29,33 @@ export class Standings extends React.Component {
   }
 
   render() {
-    return <AgGridReact columnDefs={COL_DEFS} rowData={this.getTeams()} />;
+    return (
+      <div
+        className='ag-theme-balham'
+        style={{
+          height: '500px',
+          width: '200px'
+        }}
+      >
+        <AgGridReact
+          columnDefs={COL_DEFS}
+          defaultColDef={{ width: 100 }}
+          rowData={this.getTeams()}
+        />
+      </div>
+    );
   }
 
   getTeams = () => {
-    return this.state.teams.map(team => ({
-      name: team.name,
-      score: team.players
-        .map(id => this.props.players[id].total)
-        .reduce((acc, val) => acc + val)
-    }));
+    return this.props.players
+      ? this.state.teams
+          .map(team => ({
+            name: team.name,
+            score: team.players
+              .map(id => this.props.players[id].total)
+              .reduce((acc, val) => acc + val)
+          }))
+          .sort((a, b) => a.score - b.score)
+      : [];
   };
 }

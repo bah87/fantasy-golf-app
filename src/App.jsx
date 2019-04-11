@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
 import LeaderboardContainer from './components/leaderboard/leaderboard-container';
-import { Player } from './components/player';
+// import { Player } from './components/player';
 import { Team } from './components/team';
 import { UpdateTeam } from './components/update-team';
 import { AppNavbar } from './components/app-navbar';
@@ -37,7 +37,7 @@ export class App extends Component {
               loggedIn
               component={StandingsContainer}
             />
-            {this.props.players.map(player => {
+            {/* {this.props.players.map(player => {
               return (
                 <ProtectedRoute
                   key={player.id}
@@ -47,7 +47,7 @@ export class App extends Component {
                   component={Player}
                 />
               );
-            })}
+            })} */}
           </Switch>
         </header>
       </div>

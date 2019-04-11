@@ -18,9 +18,9 @@ export class AppNavbar extends React.Component {
             <Nav.Link>
               <Link to='/leaderboard'>Leaderboard</Link>
             </Nav.Link>
-            {/* <Nav.Link>
+            <Nav.Link>
               <Link to='/standings'>Standings</Link>
-            </Nav.Link> */}
+            </Nav.Link>
             <Nav.Link>
               <Link to='/create-team'>Create Team</Link>
             </Nav.Link>
