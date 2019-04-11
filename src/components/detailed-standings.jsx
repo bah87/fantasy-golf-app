@@ -3,7 +3,6 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import groupBy from 'lodash/groupBy';
-import { PlayerCellRenderer } from './player-cell-renderer';
 
 const COL_DEFS = [
   { headerName: 'POS', field: 'position', width: 70 },
@@ -11,8 +10,7 @@ const COL_DEFS = [
     headerName: 'PLAYER',
     field: 'fullName',
     width: 150,
-    cellStyle: { textAlign: 'start' },
-    cellRendererFramework: PlayerCellRenderer
+    cellStyle: { textAlign: 'start' }
   },
   { headerName: 'THRU', field: 'thru' },
   { headerName: 'SCORE', field: 'total' }

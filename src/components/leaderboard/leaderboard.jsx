@@ -3,7 +3,6 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import { TournamentHeader } from '../tournament-header';
-import { PlayerCellRenderer } from '../player-cell-renderer';
 
 const COLUMN_DEFS = [
   { headerName: 'POS', field: 'position', width: 70 },
@@ -11,8 +10,7 @@ const COLUMN_DEFS = [
     headerName: 'PLAYER',
     field: 'fullName',
     width: 150,
-    cellStyle: { textAlign: 'start' },
-    cellRendererFramework: PlayerCellRenderer
+    cellStyle: { textAlign: 'start' }
   },
   { headerName: 'TO PAR', field: 'toPar' },
   { headerName: 'TODAY', field: 'today' },
