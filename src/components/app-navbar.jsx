@@ -2,9 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export class AppNavbar extends React.Component {
@@ -31,14 +28,6 @@ export class AppNavbar extends React.Component {
               <Link to='/update-team'>Update Team</Link>
             </Nav.Link>
           </Nav>
-          <Form inline>
-            <FormControl
-              type='text'
-              placeholder='Find player'
-              className='mr-sm-2'
-            />
-            <Button variant='outline-success'>Go</Button>
-          </Form>
         </Navbar.Collapse>
       </Navbar>
     );

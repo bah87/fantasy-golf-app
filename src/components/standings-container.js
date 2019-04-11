@@ -1,6 +1,6 @@
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Leaderboard } from './leaderboard';
+import { Standings } from './standings';
 
 const mapStateToProps = (state, _ownProps) => {
   let players = {};
@@ -15,5 +15,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     null
-  )(Leaderboard)
+  )(Standings)
 );

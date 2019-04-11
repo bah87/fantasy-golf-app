@@ -5,7 +5,7 @@ import { Player } from './components/player';
 import { Team } from './components/team';
 import { UpdateTeam } from './components/update-team';
 import { AppNavbar } from './components/app-navbar';
-import { Standings } from './components/standings';
+import StandingsContainer from './components/standings-container';
 import { ProtectedRoute } from './util/route-util';
 import './App.css';
 
@@ -32,7 +32,11 @@ export class App extends Component {
               loggedIn
               component={UpdateTeam}
             />
-            <ProtectedRoute path='/standings' loggedIn component={Standings} />
+            <ProtectedRoute
+              path='/standings'
+              loggedIn
+              component={StandingsContainer}
+            />
             {this.props.players.map(player => {
               return (
                 <ProtectedRoute
