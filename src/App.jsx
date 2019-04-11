@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
 import LeaderboardContainer from './components/leaderboard/leaderboard-container';
 import { Player } from './components/player';
-import { Team } from './components/player';
+import { Team } from './components/team';
+import { UpdateTeam } from './components/update-team';
 import { AppNavbar } from './components/app-navbar';
-import { Standings } from './components/standings';
+// import { Standings } from './components/standings';
 import { ProtectedRoute } from './util/route-util';
 import './App.css';
 
@@ -25,6 +26,11 @@ export class App extends Component {
               component={LeaderboardContainer}
             />
             <ProtectedRoute path='/create-team' loggedIn component={Team} />
+            <ProtectedRoute
+              path='/update-team'
+              loggedIn
+              component={UpdateTeam}
+            />
             {/* <ProtectedRoute path='/standings' loggedIn component={Standings} /> */}
             {this.props.players.map(player => {
               return (
