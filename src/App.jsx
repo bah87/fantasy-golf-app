@@ -5,13 +5,14 @@ import { Player } from './components/player';
 import { Team } from './components/team';
 import { UpdateTeam } from './components/update-team';
 import { AppNavbar } from './components/app-navbar';
-// import { Standings } from './components/standings';
+import { Standings } from './components/standings';
 import { ProtectedRoute } from './util/route-util';
 import './App.css';
 
 export class App extends Component {
   componentDidMount() {
     this.props.fetchPlayers();
+    this.props.fetchLeaderboard();
   }
 
   render() {
@@ -31,7 +32,7 @@ export class App extends Component {
               loggedIn
               component={UpdateTeam}
             />
-            {/* <ProtectedRoute path='/standings' loggedIn component={Standings} /> */}
+            <ProtectedRoute path='/standings' loggedIn component={Standings} />
             {this.props.players.map(player => {
               return (
                 <ProtectedRoute

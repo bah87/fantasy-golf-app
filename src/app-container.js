@@ -2,6 +2,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { App } from './App';
 import { fetchPlayers } from './actions/players-actions';
+import { fetchLeaderboard } from '../actions/leaderboard-actions';
 
 const mapStateToProps = (state, _ownProps) => {
   return {
@@ -11,7 +12,8 @@ const mapStateToProps = (state, _ownProps) => {
 
 const mapDispatchToProps = (dispatch, _ownProps) => {
   return {
-    fetchPlayers: () => dispatch(fetchPlayers())
+    fetchPlayers: () => dispatch(fetchPlayers()),
+    fetchLeaderboard: () => dispatch(fetchLeaderboard())
   };
 };
 

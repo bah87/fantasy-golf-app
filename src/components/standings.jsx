@@ -37,7 +37,7 @@ export class Standings extends React.Component {
     return this.state.teams.map(team => ({
       name: team.name,
       score: team.players
-        .map(p => this.props.players[p.id].score)
+        .map(id => this.props.players[id].total)
         .reduce((acc, val) => acc + val)
     }));
   };
