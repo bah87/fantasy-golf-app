@@ -59,7 +59,7 @@ export const getPlayer = playerParams => {
 
 export const getPlayerStats = stats => {
   const rounds = stats.rounds;
-  const score = getScore(stats.score);
+  const score = getScore(stats.total);
   const currentRound = stats.current_round;
   const teeTime = getTeeTime(rounds, currentRound);
   const { first_name, last_name } = stats.player_bio;
