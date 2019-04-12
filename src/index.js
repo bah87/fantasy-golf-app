@@ -9,6 +9,7 @@ import {
 import { Root } from './root';
 import configureStore from './store/store';
 import 'bootstrap/dist/css/bootstrap.css';
+import '../node_modules/video-react/dist/video-react.css';
 import './index.css';
 
 library.add(faGolfBall);

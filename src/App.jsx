@@ -3,6 +3,7 @@ import { Switch } from 'react-router-dom';
 import LeaderboardContainer from './components/leaderboard/leaderboard-container';
 import { AppNavbar } from './components/app-navbar';
 import NewStandingsContainer from './components/new-standings-container';
+import { Videos } from './components/videos';
 import { ProtectedRoute } from './util/route-util';
 import './App.css';
 
@@ -28,6 +29,7 @@ export class App extends Component {
               loggedIn
               component={NewStandingsContainer}
             />
+            <ProtectedRoute path='/videos' loggedIn component={Videos} />
           </Switch>
         </header>
       </div>
