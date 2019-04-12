@@ -13,7 +13,8 @@ const COL_DEFS = [
     cellStyle: { textAlign: 'start' }
   },
   { headerName: 'THRU', field: 'thru' },
-  { headerName: 'SCORE', field: 'total' }
+  { headerName: 'TODAY', field: 'today' },
+  { headerName: 'TOTAL', field: 'score' }
 ];
 
 export class DetailedStandings extends React.Component {
@@ -32,7 +33,7 @@ export class DetailedStandings extends React.Component {
                 className='ag-theme-balham'
                 style={{
                   height: '200px',
-                  width: '420px'
+                  width: '520px'
                 }}
               >
                 <AgGridReact
