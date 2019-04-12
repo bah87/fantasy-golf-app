@@ -57,7 +57,26 @@ export const getPlayer = playerParams => {
   };
 };
 
-export const getPlayerStats = stats => {
+export const getProjectedCut = players => {
+  let lead;
+  let cut;
+  players.forEach((player, pos) => {
+    if (parseInt(player.current_position) === 1) {
+      lead = player.total;
+    }
+    if (
+      parseInt(player.current_position) <= 50 ||
+      player.total - lead <= 10 ||
+      pos + 1 <= 50
+    ) {
+      cut = player.total;
+    }
+  });
+
+  return cut;
+};
+
+export const getPlayerStats = (stats, projCut) => {
   const rounds = stats.rounds;
   const score = getScore(stats.total);
   const currentRound = stats.current_round;
@@ -82,6 +101,7 @@ export const getPlayerStats = stats => {
     roundOneScore: rounds && rounds[0].strokes,
     roundTwoScore: rounds && rounds[1].strokes,
     roundThreeScore: rounds && rounds[2].strokes,
-    roundFourScore: rounds && rounds[3].strokes
+    roundFourScore: rounds && rounds[3].strokes,
+    projCut: stats.total > projCut
   };
 };
