@@ -11,7 +11,7 @@ const handleFetchTournamentData = data => {
     return;
   }
 
-  const projCut = getProjectedCut(data.leaderboard.players);
+  const projCut = getProjectedCut(data.leaderboard);
 
   return {
     tournament: getTournament({

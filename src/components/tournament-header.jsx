@@ -26,9 +26,7 @@ export class TournamentHeader extends React.Component {
           <div className='h6 text-muted'>
             <small>{`Round ${round} - ${roundState}`}</small>
           </div>
-          <div className='h4'>{`Projected Cut: ${
-            projCut > 0 ? '+' : ''
-          }${projCut}`}</div>
+          <div className='h4'>{`Projected Cut: ${projCut}`}</div>
         </div>
       </div>
     );

@@ -57,23 +57,29 @@ export const getPlayer = playerParams => {
   };
 };
 
-export const getProjectedCut = players => {
-  let lead;
-  let cut;
-  players.forEach((player, pos) => {
-    if (parseInt(player.current_position) === 1) {
-      lead = player.total;
-    }
-    if (
-      parseInt(player.current_position) <= 50 ||
-      player.total - lead <= 10 ||
-      pos + 1 <= 50
-    ) {
-      cut = player.total;
-    }
-  });
-
-  return cut;
+export const getProjectedCut = leaderboard => {
+  // let lead;
+  // let cut;
+  // players.forEach((player, pos) => {
+  //   if (parseInt(player.current_position) === 1) {
+  //     lead = player.total;
+  //   }
+  //   if (
+  //     parseInt(player.current_position) <= 50 ||
+  //     player.total - lead <= 10 ||
+  //     pos + 1 <= 50
+  //   ) {
+  //     cut = player.total;
+  //   }
+  // });
+  if (
+    !leaderboard ||
+    !leaderboard.cut_line ||
+    !leaderboard.cut_line.cut_line_score
+  ) {
+    return undefined;
+  }
+  return getScore(leaderboard.cut_line.cut_line_score);
 };
 
 export const getPlayerStats = (stats, projCut) => {
