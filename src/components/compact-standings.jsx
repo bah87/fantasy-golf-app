@@ -2,8 +2,10 @@ import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import { generateStandings } from '../util/utils';
 
 const COL_DEFS = [
+  { headerName: 'POS', field: 'position', width: 70 },
   {
     headerName: 'TEAM',
     field: 'name',
@@ -20,7 +22,7 @@ export class CompactStandings extends React.Component {
         className='ag-theme-balham'
         style={{
           height: '500px',
-          width: '300px'
+          width: '370px'
         }}
       >
         <AgGridReact
@@ -33,7 +35,7 @@ export class CompactStandings extends React.Component {
   }
 
   getTeams = () => {
-    return this.props.players
+    const teams = this.props.players
       ? this.props.teams
           .map(team => ({
             name: team.name,
@@ -45,5 +47,7 @@ export class CompactStandings extends React.Component {
           }))
           .sort((a, b) => a.score - b.score)
       : [];
+
+    return generateStandings(teams);
   };
 }
