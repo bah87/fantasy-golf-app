@@ -1,5 +1,5 @@
 import getTournament from './tournament';
-import { getPlayerStats, getProjectedCut } from './player';
+import { getPlayerStats } from './player';
 
 const handleFetchError = err => {
   console.log('Fetch error: ', err);
@@ -11,15 +11,12 @@ const handleFetchTournamentData = data => {
     return;
   }
 
-  const projCut = getProjectedCut(data.leaderboard);
-
   return {
     tournament: getTournament({
       ...data.leaderboard,
-      lastUpdated: data.last_updated,
-      projCut
+      lastUpdated: data.last_updated
     }),
-    playerStats: data.leaderboard.players.map(p => getPlayerStats(p, projCut))
+    playerStats: data.leaderboard.players.map(getPlayerStats)
   };
 };
 

@@ -11,8 +11,7 @@ const getTournament = tournamentParams => {
     lastUpdated: tournamentParams.lastUpdated,
     round: tournamentParams.current_round,
     roundState: tournamentParams.round_state,
-    course: getCourse(tournamentParams.courses[0]),
-    projCut: tournamentParams.projCut
+    course: getCourse(tournamentParams.courses[0])
   };
 };
 

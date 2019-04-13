@@ -82,12 +82,14 @@ export const getProjectedCut = leaderboard => {
   return getScore(leaderboard.cut_line.cut_line_score);
 };
 
-export const getPlayerStats = (stats, projCut) => {
+export const getPlayerStats = stats => {
   const rounds = stats.rounds;
-  const score = getScore(stats.total);
   const currentRound = stats.current_round;
   const teeTime = getTeeTime(rounds, currentRound);
   const { first_name, last_name } = stats.player_bio;
+  const isCut = stats.status === 'cut';
+  const total = isCut ? Math.round(1.82 + 1.34 * stats.total) : stats.total;
+  const score = getScore(total);
 
   return {
     id: stats.player_id,
@@ -96,8 +98,8 @@ export const getPlayerStats = (stats, projCut) => {
     fullName: `${first_name} ${last_name}`,
     score,
     teeTime,
-    total: stats.total,
-    isCut: stats.status === 'cut',
+    total,
+    isCut,
     isWD: stats.status === 'wd',
     position: stats.current_position,
     totalStrokes: stats.total_strokes,
@@ -107,7 +109,6 @@ export const getPlayerStats = (stats, projCut) => {
     roundOneScore: rounds && rounds[0].strokes,
     roundTwoScore: rounds && rounds[1].strokes,
     roundThreeScore: rounds && rounds[2].strokes,
-    roundFourScore: rounds && rounds[3].strokes,
-    projCut: stats.total > projCut
+    roundFourScore: rounds && rounds[3].strokes
   };
 };
