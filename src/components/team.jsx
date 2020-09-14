@@ -21,28 +21,24 @@ export class Team extends React.Component {
       playerSearch: '',
       error: '',
       isSubmitted: false,
-      isSubmitDisabled: false
+      isSubmitDisabled: false,
     };
   }
 
   async componentDidMount() {
     // get player data
-    const fieldResp = await fetch(
-      'https://statdata.pgatour.com/r/014/field.json'
-    );
+    const fieldResp = await fetch('https://statdata.pgatour.com/r/026/field.json');
     const fieldData = await fieldResp.json();
     const playerMap = {};
-    fieldData.Tournament.Players.forEach(playerParams => {
+    fieldData.Tournament.Players.forEach((playerParams) => {
       const player = getPlayer(playerParams);
       playerMap[player.id] = player;
     });
 
     // get player salaries
-    const salaryResp = await fetch(
-      'https://fantasy-golf-server.herokuapp.com/salaries'
-    );
+    const salaryResp = await fetch('https://fantasy-golf-server.herokuapp.com/salaries');
     const salaryData = await salaryResp.json();
-    salaryData.forEach(player => {
+    salaryData.forEach((player) => {
       if (playerMap[player.player_id]) {
         playerMap[player.player_id].salary = parseInt(player.salary);
       }
@@ -53,48 +49,28 @@ export class Team extends React.Component {
   }
 
   render() {
-    const {
-      name,
-      team,
-      remainingSalary,
-      playerSearch,
-      error,
-      isSubmitted,
-      isSubmitDisabled
-    } = this.state;
+    const { name, team, remainingSalary, playerSearch, error, isSubmitted, isSubmitDisabled } = this.state;
 
     return (
-      <div className='d-flex flex-column align-items-center justify-content-start mt-2'>
+      <div className="d-flex flex-column align-items-center justify-content-start mt-2">
         <Form.Group>
-          <Form.Control
-            onChange={this.handleName}
-            value={name}
-            type='name'
-            placeholder='Enter full name'
-          />
+          <Form.Control onChange={this.handleName} value={name} type="name" placeholder="Enter full name" />
         </Form.Group>
-        <div className='d-flex flex-row align-items-start justify-content-around w-100 mt-5'>
+        <div className="d-flex flex-row align-items-start justify-content-around w-100 mt-5">
           <div d-flex flex-column align-items-center justify-content-start>
-            <InputGroup className='mb-3'>
-              <FormControl
-                value={playerSearch}
-                onChange={this.handlePlayerSearch}
-                placeholder='Player search'
-              />
+            <InputGroup className="mb-3">
+              <FormControl value={playerSearch} onChange={this.handlePlayerSearch} placeholder="Player search" />
               <InputGroup.Append>
-                <Button
-                  onClick={this.clearPlayerSearch}
-                  variant='outline-secondary'
-                >
+                <Button onClick={this.clearPlayerSearch} variant="outline-secondary">
                   Clear
                 </Button>
               </InputGroup.Append>
             </InputGroup>
             <div
-              className='ag-theme-balham'
+              className="ag-theme-balham"
               style={{
                 height: '400px',
-                width: '280px'
+                width: '280px',
               }}
             >
               <AgGridReact
@@ -104,12 +80,12 @@ export class Team extends React.Component {
               />
             </div>
           </div>
-          <div className='d-flex flex-column align-items-center justify-content-start ml-3'>
+          <div className="d-flex flex-column align-items-center justify-content-start ml-3">
             <div
-              className='ag-theme-balham'
+              className="ag-theme-balham"
               style={{
                 height: '200px',
-                width: '280px'
+                width: '280px',
               }}
             >
               <AgGridReact
@@ -118,34 +94,27 @@ export class Team extends React.Component {
                 onCellClicked={this.handlePlayerRemoved}
               />
             </div>
-            <div className='w-100 mt-2 h5'>
-              <span className='mr-1'>Remaining salary:</span>
-              <span
-                className={remainingSalary < 0 ? 'text-danger' : 'text-success'}
-              >
+            <div className="w-100 mt-2 h5">
+              <span className="mr-1">Remaining salary:</span>
+              <span className={remainingSalary < 0 ? 'text-danger' : 'text-success'}>
                 {this.formatSalary(remainingSalary)}
               </span>
             </div>
             {error && (
-              <Alert className='small mb-1' variant='danger'>
+              <Alert className="small mb-1" variant="danger">
                 {error}
               </Alert>
             )}
             {isSubmitted && (
-              <Alert className='small mb-1' variant='success'>
+              <Alert className="small mb-1" variant="success">
                 Team submitted successfully
               </Alert>
             )}
-            <div className='d-flex flex-row align-items-center justify-content-around w-100 mt-2'>
-              <Button onClick={this.clearTeam} size='sm' variant='secondary'>
+            <div className="d-flex flex-row align-items-center justify-content-around w-100 mt-2">
+              <Button onClick={this.clearTeam} size="sm" variant="secondary">
                 Clear team
               </Button>
-              <Button
-                disabled={isSubmitDisabled}
-                onClick={this.submitTeam}
-                size='sm'
-                variant='primary'
-              >
+              <Button disabled={isSubmitDisabled} onClick={this.submitTeam} size="sm" variant="primary">
                 Submit team
               </Button>
             </div>
@@ -155,12 +124,12 @@ export class Team extends React.Component {
     );
   }
 
-  setIsSubmitted = isSubmitted => {
+  setIsSubmitted = (isSubmitted) => {
     this.setState({ isSubmitted });
     setTimeout(() => this.setState({ isSubmitted: !isSubmitted }), 2500);
   };
 
-  setError = error => {
+  setError = (error) => {
     this.setState({ error });
     setTimeout(() => this.setState({ error: '' }), 2500);
   };
@@ -172,92 +141,77 @@ export class Team extends React.Component {
   displayPlayers = () => {
     const { players, playerSearch } = this.state;
     const regex = new RegExp(playerSearch.toLowerCase());
-    return players
-      .filter(p => regex.test(p.fullName.toLowerCase()))
-      .sort((a, b) => b.salary - a.salary);
+    return players.filter((p) => regex.test(p.fullName.toLowerCase())).sort((a, b) => b.salary - a.salary);
   };
 
-  formatSalary = salary => {
+  formatSalary = (salary) => {
     const formatted = new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'USD',
     }).format(salary);
 
     return formatted.split('.')[0];
   };
 
-  showAddIcon = salary => {
+  showAddIcon = (salary) => {
     return salary <= this.state.remainingSalary && this.state.team.length < 6;
   };
 
-  plusIcon = props => {
+  plusIcon = (props) => {
     return (
       <FontAwesomeIcon
         style={{ cursor: 'pointer' }}
-        className={
-          props.data.salary > this.state.remainingSalary
-            ? 'text-danger'
-            : 'text-success'
-        }
-        icon='plus-circle'
+        className={props.data.salary > this.state.remainingSalary ? 'text-danger' : 'text-success'}
+        icon="plus-circle"
       />
     );
   };
 
-  minusIcon = () => (
-    <FontAwesomeIcon
-      style={{ cursor: 'pointer' }}
-      className='text-danger'
-      icon='minus-circle'
-    />
-  );
+  minusIcon = () => <FontAwesomeIcon style={{ cursor: 'pointer' }} className="text-danger" icon="minus-circle" />;
 
-  getColDefs = type => {
+  getColDefs = (type) => {
     return [
       {
         headerName: 'PLAYER',
         field: 'fullName',
         width: 150,
-        cellStyle: { textAlign: 'start' }
+        cellStyle: { textAlign: 'start' },
       },
       { headerName: 'SALARY', field: 'salary', width: 90 },
       {
         width: 40,
-        cellRendererFramework:
-          type === 'players' ? this.plusIcon : this.minusIcon
-      }
+        cellRendererFramework: type === 'players' ? this.plusIcon : this.minusIcon,
+      },
     ];
   };
 
-  handlePlayerAdded = cell => {
+  handlePlayerAdded = (cell) => {
     if (cell.value || this.state.team.length === 6) {
       return;
     }
 
     const team = [...this.state.team, cell.data];
-    const players = this.state.players.filter(
-      player => player.id !== cell.data.id
-    );
+    const players = this.state.players.filter((player) => player.id !== cell.data.id);
     const remainingSalary = this.state.remainingSalary - cell.data.salary;
     this.setState({ team, players, remainingSalary });
   };
 
-  handlePlayerRemoved = cell => {
+  handlePlayerRemoved = (cell) => {
     if (cell.value) {
       return;
     }
 
     const players = [...this.state.players, cell.data];
-    const team = this.state.team.filter(player => player.id !== cell.data.id);
+    const team = this.state.team.filter((player) => player.id !== cell.data.id);
     const remainingSalary = this.state.remainingSalary + cell.data.salary;
     this.setState({ team, players, remainingSalary });
   };
 
-  handleName = e => {
+  handleName = (e) => {
     this.setState({ name: e.target.value });
   };
 
-  handlePlayerSearch = e => {
+  handlePlayerSearch = (e) => {
     this.setState({ playerSearch: e.target.value });
   };
 
@@ -285,21 +239,17 @@ export class Team extends React.Component {
       method: 'POST',
       mode: 'cors',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, team: team.map(player => player.id) })
+      body: JSON.stringify({ name, team: team.map((player) => player.id) }),
     })
-      .then(res => {
+      .then((res) => {
         console.log('createTeam response: ', res);
         return res
           .json()
-          .then(resp => {
+          .then((resp) => {
             console.log('createTeam json: ', resp);
-            if (
-              resp &&
-              resp.error &&
-              resp.error.constraint === 'teams_name_key'
-            ) {
+            if (resp && resp.error && resp.error.constraint === 'teams_name_key') {
               this.setError('Provided name is already taken');
               this.setState({ isSubmitted: false });
             } else if (resp && resp.status === 'success') {
@@ -308,12 +258,12 @@ export class Team extends React.Component {
             }
             this.setState({ isSubmitDisabled: false });
           })
-          .catch(err => {
+          .catch((err) => {
             console.log('createTeam json failed: ', err);
             this.handleError();
           });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('createTeam failed: ', err);
         this.handleError();
       });
