@@ -4,6 +4,7 @@ import { Switch } from 'react-router-dom';
 import { AppNavbar } from './components/app-navbar';
 // import NewStandingsContainer from './components/new-standings-container';
 import { Team } from './components/team';
+import { Signup } from './components/signup';
 // import { Videos } from './components/videos';
 // import { AddSalaries } from './components/add-salaries/add-salaries';
 import { ProtectedRoute } from './util/route-util';
@@ -22,6 +23,7 @@ export class App extends Component {
         <header className="App-header">
           <Switch>
             <ProtectedRoute path="/create-team" loggedIn component={Team} />
+            <ProtectedRoute path="/signup" loggedIn component={Signup} />
             {/* <ProtectedRoute path="/leaderboard" loggedIn component={LeaderboardContainer} />
             <ProtectedRoute path="/standings" loggedIn component={NewStandingsContainer} /> */}
             {/* <ProtectedRoute path="/videos" loggedIn component={Videos} />
