@@ -8,7 +8,7 @@ import { loginUser, signupUser } from './actions/user-actions';
 const mapStateToProps = (state, _ownProps) => {
   return {
     players: Object.values(state.players),
-    user: state.user,
+    user: state.user ? state.user.user : {},
   };
 };
 
