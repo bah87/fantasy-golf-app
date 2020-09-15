@@ -84,7 +84,8 @@ export class Signup extends React.Component {
         body: JSON.stringify({ name, email, password }),
       }).then((res) => {
         console.log('signup response', res);
-        this.props.login();
+        res.json().then((data) => console.log('signup data', data));
+        this.props.onLogin();
       });
     } else {
       this.setState({ error: 'Please enter a valid email' });
