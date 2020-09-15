@@ -75,18 +75,7 @@ export class Signup extends React.Component {
     if (this.isEmailValid()) {
       console.log('signing up....');
       const { email, name, password } = this.state;
-      fetch('https://fantasy-golf-server.herokuapp.com/signup', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      }).then((res) => {
-        console.log('signup response', res);
-        res.json().then((data) => console.log('signup data', data));
-        this.props.onLogin();
-      });
+      this.props.signupUser({ email, name, password });
     } else {
       this.setState({ error: 'Please enter a valid email' });
     }

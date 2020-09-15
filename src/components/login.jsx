@@ -10,11 +10,12 @@ export class Login extends React.Component {
       email: '',
       password: '',
       error: '',
+      action: 'Login',
     };
   }
 
   render() {
-    const { email, password, error } = this.state;
+    const { email, password, error, action } = this.state;
 
     return (
       <div>
@@ -41,14 +42,19 @@ export class Login extends React.Component {
           disabled={!this.isSubmitEnabled()}
           onClick={this.login.bind(this)}
         >
-          Login
+          {action}
         </Button>
+        {error && (
+          <Alert className="small mb-1" variant="danger">
+            {error}
+          </Alert>
+        )}
       </div>
     );
   }
 
   handleChange(e, field) {
-    this.setState({ [field]: e.currentTarget.value });
+    this.setState({ [field]: e.currentTarget.value, error: '' });
   }
 
   isSubmitEnabled() {
@@ -57,20 +63,8 @@ export class Login extends React.Component {
   }
 
   login() {
-    console.log('logging in....');
+    this.setState({ action: 'Logging in...', error: '' });
     const { email, password } = this.state;
-    fetch('https://fantasy-golf-server.herokuapp.com/login', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({ email, password, remember: true }),
-    }).then((res) => {
-      console.log('login response', res);
-      res.json().then((data) => console.log('login data', data));
-      this.props.onLogin();
-    });
+    this.props.loginUser({ email, password });
   }
 }

@@ -14,11 +14,14 @@ export class Enter extends React.Component {
 
   render() {
     const { loggedIn, signUp } = this.state;
+    const { user, error, signupUser, loginUser } = this.props;
+    console.log('user props: ', user);
+    console.log('error props: ', error);
     return (
       <div>
         {!loggedIn && (
           <div>
-            {signUp ? <Signup onLogin={this.login.bind(this)} /> : <Login onLogin={this.login.bind(this)} />}
+            {signUp ? <Signup signupUser={signupUser} /> : <Login loginUser={loginUser} />}
             <button
               style={{ background: 'none', border: 'none', textDecoration: 'underline', color: '#007BFF' }}
               onClick={this.toggleSignUp.bind(this)}
