@@ -9,7 +9,11 @@ export const loginUser = (user) => {
     credentials: 'include',
     body: JSON.stringify({ ...user, remember: true }),
   })
-    .then((res) => res.json().then((user) => user))
+    .then((res) => {
+      return res.json().then((user) => {
+        return user;
+      });
+    })
     .catch((err) => {
       console.log('Login error', err);
       return 'Error attempting to login. Please try again.';

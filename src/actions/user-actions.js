@@ -10,7 +10,7 @@ const receiveUser = (user) => {
   };
 };
 
-const receiveError = (type, error) => {
+const receiveError = (error) => {
   return {
     type: RECEIVE_LOGIN_SIGNUP_ERROR,
     error,
