@@ -15,6 +15,16 @@ export class App extends Component {
   componentDidMount() {
     // this.props.fetchPlayers();
     // this.props.fetchLeaderboard();
+    fetch('https://fantasy-golf-server.herokuapp.com/user', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => {
+      console.log('user get response', res);
+      res.json().then((data) => console.log('user data', data));
+    });
   }
 
   render() {
