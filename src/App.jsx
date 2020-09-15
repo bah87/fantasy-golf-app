@@ -23,24 +23,13 @@ export class App extends Component {
               user={user}
               component={user.team ? UpdateTeam : Team}
             />
-            {/* <Route
-              path="/update"
-              render={() => (
-                <UpdateTeam
-                  loginUser={loginUser}
-                  signupUser={signupUser}
-                  error={user.error}
-                  user={user.name ? user : null}
-                />
-              )}
-            /> */}
             <Route
               path="/login"
               render={() => (
                 <Enter
                   loginUser={loginUser}
                   signupUser={signupUser}
-                  error={user.error}
+                  error={user.name ? '' : user}
                   user={user.name ? user : null}
                 />
               )}
