@@ -16,8 +16,10 @@ export class Login extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.error) {
-      return { error: props.error, action: 'Login' };
+      return { ...state, error: props.error, action: 'Login' };
     }
+
+    return state;
   }
 
   render() {
