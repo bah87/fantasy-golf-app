@@ -37,9 +37,9 @@ export class UpdateTeam extends React.Component {
       .reduce((acc, val) => acc + val);
     return {
       selectedTeam,
-      team,
+      team: team.filter((p) => p),
       remainingSalary: 50000 - teamSalary,
-      players: state.players.filter((player) => !(state.selectedTeam || []).includes(player.player_id)),
+      players: state.players.filter((player) => !(state.selectedTeam || []).includes(player.id)),
     };
   }
 
@@ -62,10 +62,17 @@ export class UpdateTeam extends React.Component {
       }
     });
 
+    const team = this.state.selectedTeam.map((id) => this.state.playerMap[id]);
+    const teamSalary = this.state.selectedTeam
+      .map((id) => (this.state.playerMap[id] ? this.state.playerMap[id].salary : 0))
+      .reduce((acc, val) => acc + val);
+
     // update state
     this.setState({
-      players: Object.values(playerMap).filter((player) => !(this.state.selectedTeam || []).includes(player.player_id)),
+      players: Object.values(playerMap).filter((player) => !(this.state.selectedTeam || []).includes(player.id)),
       playerMap,
+      team,
+      teamSalary,
     });
   }
 
