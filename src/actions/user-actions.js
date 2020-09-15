@@ -18,21 +18,13 @@ const receiveError = (error) => {
 };
 
 export const loginUser = () => (dispatch) => {
-  return UserApiUtil.loginUser()
-    .then((user) => {
-      dispatch(receiveUser(user));
-    })
-    .catch((error) => {
-      dispatch(receiveError(error));
-    });
+  return UserApiUtil.loginUser().then((user) => {
+    dispatch(receiveUser(user));
+  });
 };
 
 export const signupUser = () => (dispatch) => {
-  return UserApiUtil.signupUser()
-    .then((user) => {
-      dispatch(receiveUser(user));
-    })
-    .catch((error) => {
-      dispatch(receiveError(error));
-    });
+  return UserApiUtil.signupUser().then((user) => {
+    dispatch(receiveUser(user));
+  });
 };
