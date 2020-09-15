@@ -39,7 +39,7 @@ export class UpdateTeam extends React.Component {
       selectedTeam,
       team,
       remainingSalary: 50000 - teamSalary,
-      players: this.state.players.filter((player) => !(this.state.selectedTeam || []).includes(player.player_id)),
+      players: state.players.filter((player) => !(state.selectedTeam || []).includes(player.player_id)),
     };
   }
 
