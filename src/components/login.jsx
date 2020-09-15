@@ -43,23 +43,12 @@ export class Login extends React.Component {
         >
           Login
         </Button>
-        {error && (
-          <Alert className="small mb-1" variant="danger">
-            {error}
-          </Alert>
-        )}
       </div>
     );
   }
 
   handleChange(e, field) {
-    const newState = { [field]: e.currentTarget.value };
-
-    if (field === 'email') {
-      newState.error = '';
-    }
-
-    this.setState(newState);
+    this.setState({ [field]: e.currentTarget.value });
   }
 
   isSubmitEnabled() {
@@ -68,29 +57,19 @@ export class Login extends React.Component {
   }
 
   login() {
-    if (this.isEmailValid()) {
-      console.log('logging in....');
-      const { email, password } = this.state;
-      fetch('https://fantasy-golf-server.herokuapp.com/login', {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      }).then((res) => {
-        console.log('login response', res);
-      });
-    } else {
-      this.setState({ error: 'Please enter a valid email' });
-    }
-  }
-
-  isEmailValid() {
-    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.state.email)) {
-      return true;
-    }
-
-    return false;
+    console.log('logging in....');
+    const { email, password } = this.state;
+    fetch('https://fantasy-golf-server.herokuapp.com/login', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password, remember: true }),
+    }).then((res) => {
+      console.log('login response', res);
+      res.json().then((data) => console.log('login data', data));
+      this.props.onLogin();
+    });
   }
 }
