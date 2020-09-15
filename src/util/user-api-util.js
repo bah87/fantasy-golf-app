@@ -16,7 +16,7 @@ export const loginUser = (user) => {
     })
     .catch((err) => {
       console.log('Login error', err);
-      return 'Error attempting to login. Please try again.';
+      return { error: 'Error attempting to login. Please try again.' };
     });
 };
 

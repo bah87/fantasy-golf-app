@@ -8,17 +8,24 @@ import './App.css';
 
 export class App extends Component {
   render() {
-    const { user, error, loginUser, signupUser } = this.props;
+    const { user, loginUser, signupUser } = this.props;
 
     return (
       <div className="App">
-        <AppNavbar />
+        <AppNavbar userName={user.name} />
         <header className="App-header">
           <Switch>
-            <ProtectedRoute path="/create-team" loggedIn user={user} component={Team} />
+            <ProtectedRoute path="/create-team" loggedIn={!!user.name} user={user} component={Team} />
             <Route
               path="/login"
-              render={() => <Enter loginUser={loginUser} signupUser={signupUser} error={error} user={user} />}
+              render={() => (
+                <Enter
+                  loginUser={loginUser}
+                  signupUser={signupUser}
+                  error={user.error}
+                  user={user.name ? user : null}
+                />
+              )}
             />
           </Switch>
         </header>

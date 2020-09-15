@@ -2,7 +2,6 @@ import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
@@ -17,7 +16,6 @@ export class Team extends React.Component {
       remainingSalary: 50000,
       players: [],
       team: [],
-      name: '',
       playerSearch: '',
       error: '',
       isSubmitted: false,
@@ -49,13 +47,11 @@ export class Team extends React.Component {
   }
 
   render() {
-    const { name, team, remainingSalary, playerSearch, error, isSubmitted, isSubmitDisabled } = this.state;
+    const { team, remainingSalary, playerSearch, error, isSubmitted, isSubmitDisabled } = this.state;
+    console.log('team component...', this.props.user);
 
     return (
       <div className="d-flex flex-column align-items-center justify-content-start mt-2">
-        <Form.Group>
-          <Form.Control onChange={this.handleName} value={name} type="name" placeholder="Enter full name" />
-        </Form.Group>
         <div className="d-flex flex-row align-items-start justify-content-around w-100 mt-5">
           <div d-flex flex-column align-items-center justify-content-start>
             <InputGroup className="mb-3">
@@ -207,10 +203,6 @@ export class Team extends React.Component {
     this.setState({ team, players, remainingSalary });
   };
 
-  handleName = (e) => {
-    this.setState({ name: e.target.value });
-  };
-
   handlePlayerSearch = (e) => {
     this.setState({ playerSearch: e.target.value });
   };
@@ -221,11 +213,8 @@ export class Team extends React.Component {
   };
 
   submitTeam = () => {
-    const { name, team, remainingSalary } = this.state;
-    if (!name) {
-      this.setError('Please enter a name');
-      return;
-    } else if (team.length !== 6) {
+    const { team, remainingSalary } = this.state;
+    if (team.length !== 6) {
       this.setError('Please select 6 players');
       return;
     } else if (remainingSalary < 0) {
@@ -241,7 +230,7 @@ export class Team extends React.Component {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, team: team.map((player) => player.id) }),
+      body: JSON.stringify({ email: this.props.user.email, team: team.map((player) => player.id) }),
     })
       .then((res) => {
         console.log('createTeam response: ', res);

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export class AppNavbar extends React.Component {
   render() {
+    const { userName } = this.props;
     return (
       <Navbar bg="light" expand="lg">
         <FontAwesomeIcon style={{ marginRight: '8px' }} icon="golf-ball" />
@@ -19,9 +20,13 @@ export class AppNavbar extends React.Component {
               <Link to="/create-team">Create Team</Link>
             </Nav.Link>
           </Nav>
-          <Nav.Link className="mr-sm-2">
-            <Link to="/login">Login</Link>
-          </Nav.Link>
+          {userName ? (
+            <Navbar.Text>{`Logged in as ${userName}`}</Navbar.Text>
+          ) : (
+            <Nav.Link className="mr-sm-2">
+              <Link to="/login">Login</Link>
+            </Nav.Link>
+          )}
         </Navbar.Collapse>
       </Navbar>
     );
