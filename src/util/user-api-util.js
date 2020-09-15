@@ -57,7 +57,7 @@ export const signupUser = (user) => {
       }
 
       if (data.error) {
-        return data.error;
+        return { error: data.error };
       }
 
       return 'Error attempting to signup. Please try again.';

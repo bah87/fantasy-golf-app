@@ -32,7 +32,9 @@ export class UpdateTeam extends React.Component {
 
     const selectedTeam = props.user.team.players;
     const team = selectedTeam.map((id) => state.playerMap[id]);
-    const teamSalary = selectedTeam.map((id) => state.playerMap[id].salary).reduce((acc, val) => acc + val);
+    const teamSalary = selectedTeam
+      .map((id) => (state.playerMap[id] ? state.playerMap[id].salary : 0))
+      .reduce((acc, val) => acc + val);
     return {
       selectedTeam,
       team,

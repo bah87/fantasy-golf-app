@@ -29,7 +29,7 @@ export class App extends Component {
                 <Enter
                   loginUser={loginUser}
                   signupUser={signupUser}
-                  error={user.name ? '' : user}
+                  error={user.error}
                   user={user.name ? user : null}
                 />
               )}
