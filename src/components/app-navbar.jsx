@@ -18,9 +18,6 @@ export class AppNavbar extends React.Component {
             <Nav.Link>
               <Link to="/create-team">Create Team</Link>
             </Nav.Link>
-            <Nav.Link>
-              <Link to="/signup">Signup</Link>
-            </Nav.Link>
             {/* <Nav.Link>
               <Link to="/leaderboard">Leaderboard</Link>
             </Nav.Link>
@@ -34,6 +31,9 @@ export class AppNavbar extends React.Component {
               <Link to='/add-salaries'>Add Salaries</Link>
             </Nav.Link> */}
           </Nav>
+          <Nav.Link className="mr-sm-2">
+            <Link to="/login">Login</Link>
+          </Nav.Link>
         </Navbar.Collapse>
       </Navbar>
     );

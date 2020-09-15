@@ -4,8 +4,6 @@ import { Switch } from 'react-router-dom';
 import { AppNavbar } from './components/app-navbar';
 // import NewStandingsContainer from './components/new-standings-container';
 import { Team } from './components/team';
-import { Signup } from './components/signup';
-import { Login } from './components/login';
 import { Enter } from './components/enter';
 // import { Videos } from './components/videos';
 // import { AddSalaries } from './components/add-salaries/add-salaries';
@@ -22,6 +20,7 @@ export class App extends Component {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
     }).then((res) => {
       console.log('user get response', res);
       res.json().then((data) => console.log('user data', data));
@@ -35,9 +34,7 @@ export class App extends Component {
         <header className="App-header">
           <Switch>
             <ProtectedRoute path="/create-team" loggedIn component={Team} />
-            <ProtectedRoute path="/signup" loggedIn component={Signup} />
-            <ProtectedRoute path="/enter" loggedIn component={Enter} />
-            <ProtectedRoute path="/login" loggedIn component={Login} />
+            <ProtectedRoute path="/login" loggedIn component={Enter} />
             {/* <ProtectedRoute path="/leaderboard" loggedIn component={LeaderboardContainer} />
             <ProtectedRoute path="/standings" loggedIn component={NewStandingsContainer} /> */}
             {/* <ProtectedRoute path="/videos" loggedIn component={Videos} />
