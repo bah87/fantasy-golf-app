@@ -42,6 +42,10 @@ export class Team extends React.Component {
       }
     });
 
+    if (this.props.user.email) {
+      this.props.fetchTeam(this.props.user.email);
+    }
+
     // update state
     this.setState({ players: Object.values(playerMap) });
   }

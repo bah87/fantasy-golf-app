@@ -1,3 +1,24 @@
+export const fetchTeam = (email) => {
+  console.log('fetching team');
+  return fetch('https://fantasy-golf-server.herokuapp.com/team', {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ email }),
+  })
+    .then((res) => {
+      return res.json().then((teams) => {
+        return teams.length ? teams[0] : null;
+      });
+    })
+    .catch((err) => {
+      console.log('Error fetching team', err);
+    });
+};
+
 export const loginUser = (user) => {
   console.log('attempting user login');
   return fetch('https://fantasy-golf-server.herokuapp.com/login', {

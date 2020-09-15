@@ -21,7 +21,13 @@ export class Enter extends React.Component {
           <div>
             {signUp ? <Signup signupUser={signupUser} error={error} /> : <Login loginUser={loginUser} error={error} />}
             <button
-              style={{ background: 'none', border: 'none', textDecoration: 'underline', color: '#007BFF' }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#007BFF',
+                fontSize: '14px',
+                outline: 'none',
+              }}
               onClick={this.toggleSignUp.bind(this)}
             >
               {signUp ? 'Already have an account? Login' : `Don't have an account? Sign up`}

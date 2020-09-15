@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { App } from './App';
 import { fetchPlayers } from './actions/players-actions';
 import { fetchLeaderboard } from './actions/leaderboard-actions';
-import { loginUser, signupUser } from './actions/user-actions';
+import { loginUser, signupUser, fetchTeam } from './actions/user-actions';
 
 const mapStateToProps = (state, _ownProps) => {
   return {
@@ -18,6 +18,7 @@ const mapDispatchToProps = (dispatch, _ownProps) => {
     fetchLeaderboard: () => dispatch(fetchLeaderboard()),
     loginUser: (user) => dispatch(loginUser(user)),
     signupUser: (user) => dispatch(signupUser(user)),
+    fetchTeam: (email) => dispatch(fetchTeam(email)),
   };
 };
 

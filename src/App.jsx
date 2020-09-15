@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { AppNavbar } from './components/app-navbar';
 import { Team } from './components/team';
 import { Enter } from './components/enter';
@@ -8,14 +8,20 @@ import './App.css';
 
 export class App extends Component {
   render() {
-    const { user, loginUser, signupUser } = this.props;
+    const { user, loginUser, signupUser, fetchTeam } = this.props;
 
     return (
       <div className="App">
         <AppNavbar userName={user.name} />
         <header className="App-header">
           <Switch>
-            <ProtectedRoute path="/create-team" loggedIn={!!user.name} user={user} component={Team} />
+            <ProtectedRoute
+              path="/create-team"
+              loggedIn={!!user.name}
+              fetchTeam={fetchTeam}
+              user={user}
+              component={Team}
+            />
             <Route
               path="/login"
               render={() => (
@@ -27,6 +33,7 @@ export class App extends Component {
                 />
               )}
             />
+            <Redirect to="/login" />
           </Switch>
         </header>
       </div>
