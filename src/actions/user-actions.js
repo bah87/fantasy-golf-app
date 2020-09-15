@@ -17,14 +17,14 @@ const receiveError = (error) => {
   };
 };
 
-export const loginUser = () => (dispatch) => {
-  return UserApiUtil.loginUser().then((user) => {
-    dispatch(receiveUser(user));
+export const loginUser = (user) => (dispatch) => {
+  return UserApiUtil.loginUser(user).then((resultUser) => {
+    dispatch(receiveUser(resultUser));
   });
 };
 
-export const signupUser = () => (dispatch) => {
-  return UserApiUtil.signupUser().then((user) => {
-    dispatch(receiveUser(user));
+export const signupUser = (user) => (dispatch) => {
+  return UserApiUtil.signupUser(user).then((resultUser) => {
+    dispatch(receiveUser(resultUser));
   });
 };

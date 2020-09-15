@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { App } from './App';
 import { fetchPlayers } from './actions/players-actions';
 import { fetchLeaderboard } from './actions/leaderboard-actions';
-import { loginUser, signupUser } from './util/user-api-util';
+import { loginUser, signupUser } from './actions/user-actions';
 
 const mapStateToProps = (state, _ownProps) => {
   return {
