@@ -2,7 +2,6 @@ import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
@@ -22,8 +21,22 @@ export class UpdateTeam extends React.Component {
       error: '',
       isSubmitted: false,
       isSubmitDisabled: false,
-      teamsMap: {},
       selectedTeam: null,
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (!props.user || !props.user.team || !state.playerMap) {
+      return;
+    }
+
+    const selectedTeam = props.user.team.players;
+    const team = selectedTeam.players.map((id) => state.playerMap[id]);
+    const teamSalary = selectedTeam.players.map((id) => state.playerMap[id].salary).reduce((acc, val) => acc + val);
+    return {
+      selectedTeam,
+      team,
+      remainingSalary: 50000 - teamSalary,
     };
   }
 
@@ -46,47 +59,15 @@ export class UpdateTeam extends React.Component {
       }
     });
 
-    // get teams
-    const teamsResp = await fetch('https://fantasy-golf-server.herokuapp.com/teams');
-    const teamsData = await teamsResp.json();
-    const teamsMap = {};
-    teamsData.forEach((team) => {
-      teamsMap[team.id] = team;
-    });
-
     // update state
-    this.setState({ players: Object.values(playerMap), teamsMap, playerMap });
+    this.setState({ players: Object.values(playerMap), playerMap });
   }
 
   render() {
-    const {
-      team,
-      remainingSalary,
-      playerSearch,
-      error,
-      isSubmitted,
-      isSubmitDisabled,
-      teamsMap,
-      selectedTeam,
-    } = this.state;
+    const { team, remainingSalary, playerSearch, error, isSubmitted, isSubmitDisabled } = this.state;
 
     return (
       <div className="d-flex flex-column align-items-center justify-content-start mt-2">
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            {selectedTeam ? selectedTeam.name : 'Select Team'}
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            {Object.values(teamsMap).map((team) => {
-              return (
-                <Dropdown.Item key={team.id} onClick={this.selectTeam(team.id)}>
-                  {team.name}
-                </Dropdown.Item>
-              );
-            })}
-          </Dropdown.Menu>
-        </Dropdown>
         <div className="d-flex flex-row align-items-start justify-content-around w-100 mt-5">
           <div d-flex flex-column align-items-center justify-content-start>
             <InputGroup className="mb-3">
@@ -154,21 +135,6 @@ export class UpdateTeam extends React.Component {
       </div>
     );
   }
-
-  selectTeam = (id) => {
-    return () => {
-      const selectedTeam = this.state.teamsMap[id];
-      const team = selectedTeam.players.map((id) => this.state.playerMap[id]);
-      const teamSalary = selectedTeam.players
-        .map((id) => this.state.playerMap[id].salary)
-        .reduce((acc, val) => acc + val);
-      this.setState({
-        selectedTeam,
-        team,
-        remainingSalary: 50000 - teamSalary,
-      });
-    };
-  };
 
   setIsSubmitted = (isSubmitted) => {
     this.setState({ isSubmitted });
@@ -283,7 +249,7 @@ export class UpdateTeam extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: selectedTeam.name,
+        email: selectedTeam.email,
         team: team.map((player) => player.id),
       }),
     })

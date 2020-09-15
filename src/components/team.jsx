@@ -248,6 +248,7 @@ export class Team extends React.Component {
             } else if (resp && resp.status === 'success') {
               this.setIsSubmitted(true);
               this.setState({ error: '' });
+              this.props.fetchTeam(this.props.user.email);
             }
             this.setState({ isSubmitDisabled: false });
           })
