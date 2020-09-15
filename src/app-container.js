@@ -16,8 +16,8 @@ const mapDispatchToProps = (dispatch, _ownProps) => {
   return {
     fetchPlayers: () => dispatch(fetchPlayers()),
     fetchLeaderboard: () => dispatch(fetchLeaderboard()),
-    loginUser: () => dispatch(loginUser),
-    signupUser: () => dispatch(signupUser),
+    loginUser: (user) => dispatch(loginUser(user)),
+    signupUser: (user) => dispatch(signupUser(user)),
   };
 };
 
