@@ -3,11 +3,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
-export class Signup extends React.Component {
+export class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: '',
       email: '',
       password: '',
       error: '',
@@ -15,13 +14,10 @@ export class Signup extends React.Component {
   }
 
   render() {
-    const { name, email, password, error } = this.state;
+    const { email, password, error } = this.state;
 
     return (
       <div>
-        <Form.Group controlId="formBasicName">
-          <Form.Control type="text" placeholder="Name" value={name} onChange={(e) => this.handleChange(e, 'name')} />
-        </Form.Group>
         <Form.Group controlId="formBasicEmail">
           <Form.Control
             type="email"
@@ -43,9 +39,9 @@ export class Signup extends React.Component {
           variant="primary"
           type="submit"
           disabled={!this.isSubmitEnabled()}
-          onClick={this.signup.bind(this)}
+          onClick={this.login.bind(this)}
         >
-          Sign Up
+          Login
         </Button>
         {error && (
           <Alert className="small mb-1" variant="danger">
@@ -67,24 +63,23 @@ export class Signup extends React.Component {
   }
 
   isSubmitEnabled() {
-    const { email, name, password } = this.state;
-    return email && name && password;
+    const { email, password } = this.state;
+    return email && password;
   }
 
-  signup() {
+  login() {
     if (this.isEmailValid()) {
-      console.log('signing up....');
-      const { email, name, password } = this.state;
-      fetch('https://fantasy-golf-server.herokuapp.com/signup', {
+      console.log('logging in....');
+      const { email, password } = this.state;
+      fetch('https://fantasy-golf-server.herokuapp.com/login', {
         method: 'POST',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ email, password }),
       }).then((res) => {
-        console.log('signup response', res);
-        this.props.login();
+        console.log('login response', res);
       });
     } else {
       this.setState({ error: 'Please enter a valid email' });
