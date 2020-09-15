@@ -26,7 +26,7 @@ export class UpdateTeam extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (!props.user || !props.user.team || !state.playerMap) {
+    if (!props.user || !props.user.team || !state.playerMap || state.selectedTeam) {
       return;
     }
 
@@ -39,6 +39,7 @@ export class UpdateTeam extends React.Component {
       selectedTeam,
       team,
       remainingSalary: 50000 - teamSalary,
+      players: this.state.players.filter((player) => !(this.state.selectedTeam || []).includes(player.player_id)),
     };
   }
 
@@ -62,7 +63,10 @@ export class UpdateTeam extends React.Component {
     });
 
     // update state
-    this.setState({ players: Object.values(playerMap), playerMap });
+    this.setState({
+      players: Object.values(playerMap).filter((player) => !(this.state.selectedTeam || []).includes(player.player_id)),
+      playerMap,
+    });
   }
 
   render() {

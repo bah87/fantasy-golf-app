@@ -14,6 +14,12 @@ export class Signup extends React.Component {
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.error) {
+      return { error: props.error };
+    }
+  }
+
   render() {
     const { name, email, password, error } = this.state;
 
